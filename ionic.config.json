@@ -1,0 +1,7 @@
+{
+  "name": "gollum-chat",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
