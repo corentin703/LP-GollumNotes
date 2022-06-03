@@ -2,43 +2,53 @@ import { TestBed } from '@angular/core/testing';
 
 import { AccountService } from './account.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {Config} from './config.service.type';
+import {Config} from '../config.service.type';
 import {RegisterResponse} from './account.service.type';
 import {faker} from '@faker-js/faker';
-import {ConfigService} from './config.service';
+import {ConfigService} from '../config.service';
 import {of} from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import {HttpClient} from "@angular/common/http";
 
 describe('AccountService', () => {
   let accountService: AccountService;
-  let configServiceSpy: SpyObj<ConfigService>;
+  let configService: ConfigService;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
-    configServiceSpy = createSpyObj('ConfigService', ['getConfig']);
-    configServiceSpy.getConfig.and.returnValue(
-      of<Config>(
-        {
-          webService: {
-            url: 'https://gollum-notes.app'
-          }
-        }
-      )
-    );
+    // configServiceSpy = createSpyObj('ConfigService', ['getConfig']);
+    // configServiceSpy.getConfig.and.returnValue(
+    //   of<Config>(
+    //     {
+    //       webService: {
+    //         url: 'https://gollum-notes.app'
+    //       }
+    //     }
+    //   )
+    // );
 
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],
       providers: [
-        {provide: ConfigService, useValue: configServiceSpy},
+        {provide: ConfigService, useValue: configService},
         AccountService,
       ]
     }).compileComponents();
-    accountService = TestBed.inject(AccountService);
-  });
-
-  let httpTestingController: HttpTestingController;
-  beforeEach(() => {
     httpTestingController = TestBed.inject(HttpTestingController);
+    configService = TestBed.inject(ConfigService);
+    spyOn(configService, 'getConfig').and.returnValue(of(
+      {
+        webService: {
+          url: 'https://gollum-notes.app'
+        }
+      }
+    ));
+
+    accountService = new AccountService(
+      configService,
+      TestBed.inject(HttpClient)
+    );
   });
 
   it('should be created', () => {

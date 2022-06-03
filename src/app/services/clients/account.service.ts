@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {ConfigService} from './config.service';
-import {Config} from './config.service.type';
+import {ConfigService} from '../config.service';
+import {Config} from '../config.service.type';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {LoginResponse, RegisterResponse} from './account.service.type';
@@ -10,6 +10,7 @@ import {LoginResponse, RegisterResponse} from './account.service.type';
 })
 export class AccountService {
   private config: Config | null;
+  private jwtToken: string | null = null;
 
   constructor(
     private configService: ConfigService,
@@ -18,6 +19,10 @@ export class AccountService {
     configService.getConfig().subscribe(config => {
       this.config = config;
     });
+  }
+
+  public get authToken(): string | null {
+    return this.jwtToken;
   }
 
   public register(username: string, password: string): Observable<RegisterResponse> {
@@ -37,6 +42,9 @@ export class AccountService {
         username,
         password,
       }
-    );
+    ).pipe(observer => {
+      observer.subscribe(response => this.jwtToken = response.token);
+      return observer;
+    });
   }
 }
