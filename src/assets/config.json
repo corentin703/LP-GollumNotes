@@ -1,0 +1,5 @@
+{
+  "webService": {
+    "url": "https://gollum-notes.herokuapp.com/api"
+  }
+}
