@@ -9,7 +9,6 @@ export class AppComponent {
     { title: 'Notes', url: '/notes', icon: 'home' },
     { title: 'Rappels', url: '/rappels', icon: 'bulb' },
     { title: 'Archive', url: '/archive', icon:'archive' },
-    { title: 'Corbeille', url: '/corbeille', icon: 'trash' },
     // { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
     // { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' },
     // { title: 'Favorites', url: '/folder/Favorites', icon: 'heart' },
