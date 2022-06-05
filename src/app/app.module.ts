@@ -10,7 +10,7 @@ import {IonicStorageModule} from '@ionic/storage-angular';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {HttpAuthorizationInterceptor} from "./services/interceptors/HttpAuthorizationInterceptor";
+import {HttpAuthorizationInterceptor} from './services/interceptors/HttpAuthorizationInterceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +30,7 @@ import {HttpAuthorizationInterceptor} from "./services/interceptors/HttpAuthoriz
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpAuthorizationInterceptor },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpAuthorizationInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

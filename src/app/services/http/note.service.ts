@@ -11,15 +11,13 @@ import {Payload} from './common.type';
   providedIn: 'root'
 })
 export class NoteService {
-  private config: Config | null;
+  private config: Config;
 
   constructor(
     private configService: ConfigService,
     private httpClient: HttpClient,
   ) {
-    configService.getConfig().subscribe(config => {
-      this.config = config;
-    });
+    this.config = configService.getConfig();
   }
 
   private get baseUrl() {
@@ -35,6 +33,7 @@ export class NoteService {
   }
 
   public create(body: CreateNoteRequest): Observable<Payload<Note>> {
+    console.log(body);
     return this.httpClient.post<Payload<Note>>(this.baseUrl, body);
   }
 

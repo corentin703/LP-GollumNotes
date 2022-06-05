@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import {Note } from '../@entities/Note';
 import {Profile,createProfile } from '../@entities/Profile';
-import {createNote } from '../@entities/Note';
-import {NoteCrudService } from '../services/note-crud.service';
-import {UserCrudService } from '../services/user-crud.service';
+import {createNote} from '../@entities/Note';
+import {NoteService} from '../services/http/note.service';
+import {AccountService} from '../services/http/account.service';
 
 @Component({
   selector: 'app-notes',
@@ -14,39 +14,48 @@ import {UserCrudService } from '../services/user-crud.service';
 export class NotesPage implements OnInit {
 
   // noteCrudService: NoteCrudService = new NoteCrudService()
-  notes : Note[] = []
+  notes: Note[] = [];
 
-    constructor(
-      private noteCrudService: NoteCrudService,
-      private userCrudService: UserCrudService,
+  constructor(
+    private noteService: NoteService,
+    private accountService: AccountService,
 
-      ) {
+  ) {
 
-    // noteCrudService
-    //   .getNotes()
-    //   .subscribe(notes => this.notes = notes)
-
-
-    // let note = createNote("idstring", "descriptionstring")
-    // this.notes.push(note)
-
-    // console.log(note.Description)
-    }
+  // noteCrudService
+  //   .getNotes()
+  //   .subscribe(notes => this.notes = notes)
 
 
+  // let note = createNote("idstring", "descriptionstring")
+  // this.notes.push(note)
 
-    ngOnInit() {
-    }
+  // console.log(note.Description)
+  }
 
-    ionViewDidEnter() {
-      // this.noteCrudService.getNotes().subscribe((response) => {
-      //   this.notes = response;
-      // })
 
-      console.log("retour register" + this.userCrudService.registerUser(
-        createProfile("identifiant2Profile", "passwordProfile")).toString())
 
-    }
+  ngOnInit() {
+  }
 
+  ionViewDidEnter() {
+    // this.noteCrudService.getNotes().subscribe((response) => {
+    //   this.notes = response;
+    // })
+
+    this.accountService.login('identifiant2Profile', 'passwordProfile').subscribe(
+      loginRes => {
+        console.log('retour login', loginRes);
+      }
+    );
+
+    // this.accountService.register('identifiant2Profile', 'passwordProfile').subscribe(
+    //   result => {
+    //     console.log('retour register', result);
+    //
+    //
+    //   }
+    // );
+  }
 
 }
