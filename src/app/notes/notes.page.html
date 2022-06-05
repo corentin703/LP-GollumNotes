@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Notes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+<app-add-note>
+</app-add-note>
+
+  <ion-list>
+    <li *ngFor="let note of notes"><app-note [note]=note> </app-note></li>
+    <!--  -->
+
+
+    </ion-list>
+
+
+
+    <ion-item>
+
+
+    </ion-item>
+
+
+
+
+  <!-- <ion-item button (click)="buttonClick()"> -->
+
+<!-- </ion-item> -->
+
+</ion-content>
