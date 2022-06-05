@@ -9,7 +9,7 @@ import {ConfigService} from '../config.service';
 import {of} from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
 
 describe('AccountService', () => {
   let accountService: AccountService;

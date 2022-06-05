@@ -4,6 +4,8 @@ import {Config} from '../config.service.type';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {LoginResponse, RegisterResponse} from './account.service.type';
+import {Payload} from './common.type';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +27,8 @@ export class AccountService {
     return this.jwtToken;
   }
 
-  public register(username: string, password: string): Observable<RegisterResponse> {
-    return this.httpClient.post<RegisterResponse>(
+  public register(username: string, password: string): Observable<Payload<RegisterResponse>> {
+    return this.httpClient.post<Payload<RegisterResponse>>(
     `${this.config.webService.url}/auth/register`,
     {
         username,
@@ -35,16 +37,15 @@ export class AccountService {
     );
   }
 
-  public login(username: string, password: string): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(
+  public login(username: string, password: string): Observable<Payload<LoginResponse>> {
+    return this.httpClient.post<Payload<LoginResponse>>(
       `${this.config.webService.url}/auth/login`,
       {
         username,
         password,
       }
-    ).pipe(observer => {
-      observer.subscribe(response => this.jwtToken = response.token);
-      return observer;
-    });
+    ).pipe(
+      tap(response => this.jwtToken = response.data.token),
+    );
   }
 }

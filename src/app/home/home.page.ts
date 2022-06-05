@@ -16,6 +16,6 @@ export class HomePage implements OnInit {
   }
 
   addPhotoToGallery() {
-    this.photoService.addNewToGallery();
+    this.photoService.takePhoto();
   }
 }

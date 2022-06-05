@@ -9,7 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import {IonicStorageModule} from '@ionic/storage-angular';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HttpAuthorizationInterceptor} from "./services/interceptors/HttpAuthorizationInterceptor";
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +28,10 @@ import {HttpClientModule} from '@angular/common/http';
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpAuthorizationInterceptor },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
