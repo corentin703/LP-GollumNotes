@@ -6,10 +6,16 @@
 
     </ion-icon>
     <ion-label>
-      <h2>{{ title }}</h2>
+      <h2  [contentEditable]="editableTitle">{{ title }}</h2>
       <!-- <h3>Size matters not</h3> -->
-      <p>{{ content }}</p>
+      <p  [contentEditable]=editableContent>{{ content }}</p>
     </ion-label>
+
+    <ion-button (click)="takePicture()" expand="block">Prendre Photo</ion-button>
+    <ion-button (click)="addPicture()" expand="block">Ajouter Photo</ion-button>
+    <ion-button [hidden]=ishiddenUpdateButton (click)="updateNote()" expand="block">Modifier</ion-button>
+    <ion-button [hidden]=ishiddenCommitUpdateButton (click)="commitUpdateNote()" expand="block">Valider</ion-button>
+    <ion-button  (click)="deleteNote()" expand="block">Supprimer</ion-button>
   </ion-item>
 
 </div>

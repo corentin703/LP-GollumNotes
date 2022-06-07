@@ -65,18 +65,18 @@ export class NotesPage implements OnInit {
         console.log('retour getAllNote', getAllRes.data);
 
         getAllRes.data.forEach(element => {
-          let note: Note = {
+          const note: Note = {
             id: element.id,
             title: element.title,
             content: element.content,
             createdAt: element.createdAt,
             lastModifiedAt: element.lastModifiedAt,
             pictures: element.pictures
-          }
+          };
           this.notes.push(note);
-          
 
-          console.log("title " + element.title);
+
+          console.log('title ' + element.title);
 
           // this.notes.push(element as Note)
         });
@@ -84,7 +84,7 @@ export class NotesPage implements OnInit {
       }
     );
 
-    console.log("nb notes " + this.notes.length);
+    console.log('nb notes ' + this.notes.length);
 
 
     // this.accountService.register('identifiant2Profile', 'passwordProfile').subscribe(

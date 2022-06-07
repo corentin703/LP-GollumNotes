@@ -1,6 +1,6 @@
 import { Component, OnInit, ComponentFactory, ViewChild  } from '@angular/core';
 import { NoteComponent } from '../../note/note.component';
-import {NoteService} from "../../services/http/note.service";
+import {NoteService} from '../../services/http/note.service';
 
 
 
