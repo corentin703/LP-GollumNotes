@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import {Note } from '../@entities/Note';
-import {Profile,createProfile } from '../@entities/Profile';
-import {createNote} from '../@entities/Note';
-import {NoteService} from '../services/http/note.service';
-import {AccountService} from '../services/http/account.service';
+import {Note } from '../../@entities/Note';
+import {Profile,createProfile } from '../../@entities/Profile';
+import {createNote} from '../../@entities/Note';
+import {NoteService} from '../../services/http/note.service';
+import {AccountService} from '../../services/http/account.service';
 
 @Component({
   selector: 'app-notes',
@@ -43,11 +43,11 @@ export class NotesPage implements OnInit {
     //   this.notes = response;
     // })
 
-    this.accountService.login('identifiant2Profile', 'passwordProfile').subscribe(
-      loginRes => {
-        console.log('retour login', loginRes);
-      }
-    );
+    // this.accountService.login('identifiant2Profile', 'passwordProfile').subscribe(
+    //   loginRes => {
+    //     console.log('retour login', loginRes);
+    //   }
+    // );
 
     // this.accountService.register('identifiant2Profile', 'passwordProfile').subscribe(
     //   result => {

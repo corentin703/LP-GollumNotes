@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {Note } from '../@entities/Note';
-import {createNote } from '../@entities/Note';
+import {Note } from '../../@entities/Note';
+import {createNote } from '../../@entities/Note';
 ////
 //import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 // import { CustomComponent } from './custom.component';

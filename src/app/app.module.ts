@@ -11,9 +11,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {HttpAuthorizationInterceptor} from './services/interceptors/HttpAuthorizationInterceptor';
+import {LoadingComponent} from './components/loading/loading.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoadingComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
