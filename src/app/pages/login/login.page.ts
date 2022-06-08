@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
     this.accountService.login(this.username, this.password)
       .subscribe(response => {
         alert(response.data?.username);
-        this.router.navigate(['notes']);
+        this.router.navigateByUrl('/notes');
       });
   }
 

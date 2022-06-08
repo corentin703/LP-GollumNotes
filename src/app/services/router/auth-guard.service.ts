@@ -4,9 +4,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {Observable} from 'rxjs';
 import {AuthenticationState} from '../http/auth-token-service.type';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthGuardService implements CanActivate {
   private isLoggedIn: boolean | undefined;
 
@@ -24,7 +22,8 @@ export class AuthGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const isOnAuthPages = this.router.url !== '/login' && this.router.url !== '/register';
+    const isOnAuthPages = state.url === '/login' || state.url === '/register';
+    console.log(state.url);
 
     if (this.isLoggedIn) {
       return this.loggedInCase(isOnAuthPages);

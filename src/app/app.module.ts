@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {HttpAuthorizationInterceptor} from './services/interceptors/HttpAuthorizationInterceptor';
 import {LoadingComponent} from './components/loading/loading.component';
+import {AuthGuardService} from './services/router/auth-guard.service';
 
 @NgModule({
   declarations: [AppComponent, LoadingComponent],
@@ -32,6 +33,7 @@ import {LoadingComponent} from './components/loading/loading.component';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: HttpAuthorizationInterceptor, multi: true },
+    AuthGuardService,
   ],
   bootstrap: [AppComponent],
 })
