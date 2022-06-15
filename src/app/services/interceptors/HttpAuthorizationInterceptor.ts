@@ -14,7 +14,7 @@ export class HttpAuthorizationInterceptor implements HttpInterceptor {
   }
 
   async handle(req: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>>  {
-    const userToken = await this.authTokenService.get();
+    const userToken = await this.authTokenService.get().toPromise();
 
     if (userToken == null) {
       return next.handle(req).toPromise();

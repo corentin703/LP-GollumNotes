@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authTokenService.connectionState.subscribe(connectionState => {
+    this.authTokenService.getAuthentificationState().subscribe(connectionState => {
       this.authLoaded = connectionState !== undefined;
     });
   }

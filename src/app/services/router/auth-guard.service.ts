@@ -16,10 +16,9 @@ export class AuthGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authTokenService.connectionState.pipe(
+    return this.authTokenService.getAuthentificationState().pipe(
       map(connectionState => {
         const isOnAuthPages = state.url === '/login' || state.url === '/register';
-        console.log(state.url);
 
         if (connectionState === AuthenticationState.connected) {
           return this.loggedInCase(isOnAuthPages);
