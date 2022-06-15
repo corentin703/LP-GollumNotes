@@ -20,7 +20,7 @@ export class AuthGuardService implements CanActivate {
       map(connectionState => {
         const isOnAuthPages = state.url === '/login' || state.url === '/register';
 
-        if (connectionState === AuthenticationState.connected) {
+        if (connectionState === AuthenticationState.loggedIn) {
           return this.loggedInCase(isOnAuthPages);
         }
 

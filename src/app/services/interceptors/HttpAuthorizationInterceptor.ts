@@ -9,11 +9,11 @@ export class HttpAuthorizationInterceptor implements HttpInterceptor {
 
   constructor(private authTokenService: AuthTokenService) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return fromPromise(this.handle(req, next));
   }
 
-  async handle(req: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>>  {
+  private async handle(req: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>>  {
     const userToken = await this.authTokenService.get().toPromise();
 
     if (userToken == null) {

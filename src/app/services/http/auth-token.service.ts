@@ -23,9 +23,11 @@ export class AuthTokenService {
   }
 
   public getAuthentificationState(): Observable<AuthenticationState> {
-    return this.get().pipe(map(authToken =>
-      authToken === null ? AuthenticationState.disconnected : AuthenticationState.connected
-    ));
+    return this.get().pipe(
+      map(authToken =>
+        authToken === null ? AuthenticationState.loggedOut : AuthenticationState.loggedIn
+      )
+    );
   }
 
   public async save(jwtToken: string): Promise<void> {

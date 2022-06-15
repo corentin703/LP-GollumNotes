@@ -1,4 +1,4 @@
 export enum AuthenticationState {
-  connected,
-  disconnected
+  loggedIn,
+  loggedOut
 }
