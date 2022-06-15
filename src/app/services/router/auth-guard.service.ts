@@ -3,33 +3,31 @@ import {AuthTokenService} from '../http/auth-token.service';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthenticationState} from '../http/auth-token-service.type';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-  private isLoggedIn: boolean | undefined;
-
   constructor(
     private authTokenService: AuthTokenService,
     private router: Router
-  ) {
-    this.authTokenService.connectionState.subscribe(authState => {
-      this.isLoggedIn = authState === AuthenticationState.connected;
-      console.log(this.isLoggedIn);
-    });
-  }
+  ) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const isOnAuthPages = state.url === '/login' || state.url === '/register';
-    console.log(state.url);
+    return this.authTokenService.connectionState.pipe(
+      map(connectionState => {
+        const isOnAuthPages = state.url === '/login' || state.url === '/register';
+        console.log(state.url);
 
-    if (this.isLoggedIn) {
-      return this.loggedInCase(isOnAuthPages);
-    }
+        if (connectionState === AuthenticationState.connected) {
+          return this.loggedInCase(isOnAuthPages);
+        }
 
-    return this.loggedOutCase(isOnAuthPages);
+        return this.loggedOutCase(isOnAuthPages);
+      })
+    );
   }
 
   private loggedInCase(isOnAuthPages: boolean): boolean {
