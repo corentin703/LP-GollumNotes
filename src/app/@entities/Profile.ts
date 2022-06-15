@@ -3,9 +3,9 @@ export interface Profile{
   password: string;
 }
 
-export function createProfile(username:string,password:string): Profile {
-  return {
-    username,
-    password
-    }
-}
+// export function createProfile(username:string,password:string): Profile {
+//   return {
+//     username,
+//     password
+//     }
+// }

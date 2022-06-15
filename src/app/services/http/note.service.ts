@@ -38,7 +38,7 @@ export class NoteService {
   }
 
   public update(id: string, body: UpdateNoteRequest): Observable<void> {
-    return this.httpClient.post<void>(`${this.baseUrl}/${id}`, body);
+    return this.httpClient.put<void>(`${this.baseUrl}/${id}`, body);
   }
 
   public delete(id: string): Observable<void> {

@@ -3,7 +3,7 @@
   <access origin="*" />
   
   <feature name="PhotoLibrary">
-    <param name="android-package" value="com.terikon.cordova.photolibrary.PhotoLibrary"/>
+    <param name="ios-package" value="PhotoLibrary"/>
     <param name="onload" value="true"/>
   </feature>
 

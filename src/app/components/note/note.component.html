@@ -6,10 +6,30 @@
 
     </ion-icon>
     <ion-label>
-      <h2>Title</h2>
+      <h2  [contentEditable]="editableTitle">{{ title }}</h2>
       <!-- <h3>Size matters not</h3> -->
-      <p>Description</p>
+      <p  [contentEditable]=editableContent>{{ content }}</p>
     </ion-label>
+
+
+    <ion-button (click)="takePicture()" expand="block">Prendre Photo</ion-button>
+    <ion-button (click)="addPicture()" expand="block">Ajouter Photo</ion-button>
+    <ion-button [hidden]=ishiddenUpdateButton (click)="updateNote()" expand="block">Modifier</ion-button>
+    <ion-button [hidden]=ishiddenCommitUpdateButton (click)="commitUpdateNote()" expand="block">Valider</ion-button>
+    <ion-button  (click)="deleteNote()" expand="block">Supprimer</ion-button>
+
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" >
+          <!-- *ngFor="let photo of photoService.photos; index as position"-->
+          <ion-img >
+<!--            [src]="photo.webviewPath"-->
+          </ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </ion-item>
 
 </div>
