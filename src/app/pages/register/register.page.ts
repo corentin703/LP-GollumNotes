@@ -23,7 +23,8 @@ export class RegisterPage implements OnInit {
     this.accountService.register(this.username, this.password)
       .subscribe(response => {
         if (response.data !== undefined) {
-          this.router.navigateByUrl('/register');
+          // this.router.navigateByUrl('/login');
+          this.onReturnClick();
         }
       });
   }
