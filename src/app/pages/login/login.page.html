@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Connexion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Nom d'utilisateur</ion-label>
+    <ion-input
+        placeholder="Nom d'utilisateur" [(ngModel)]="username"
+    ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Mot de passe</ion-label>
+    <ion-input
+        placeholder="Mot de passe"
+        [(ngModel)]="password"
+    ></ion-input>
+  </ion-item>
+
+  <ion-button (click)="onConnectionClick()">Connexion</ion-button>
+  <ion-button (click)="onSubscriptionClick()">S'inscrire</ion-button>
+</ion-content>

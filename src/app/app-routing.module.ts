@@ -1,36 +1,33 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {AuthGuardService} from './services/router/auth-guard.service';
 
 const routes: Routes = [
   {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
+  },
+  {
+    canActivate: [AuthGuardService],
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
+  },
+  {
+    canActivate: [AuthGuardService],
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterPageModule)
+  },
+  {
+    canActivate: [AuthGuardService],
+    path: 'notes',
+    loadChildren: () => import('./pages/authenticated-layout/authenticated-layout.module')
+      .then( m => m.AuthenticatedLayoutPageModule)
+  },
+  {
     path: '',
     redirectTo: '/home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
-  {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  },
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },  {
-    path: 'notes',
-    loadChildren: () => import('./notes/notes.module').then( m => m.NotesPageModule)
-  },
-  {
-    path: 'rappels',
-    loadChildren: () => import('./rappels/rappels.module').then( m => m.RappelsPageModule)
-  },
-  {
-    path: 'archive',
-    loadChildren: () => import('./archive/archive.module').then( m => m.ArchivePageModule)
-  },
-  {
-    path: 'corbeille',
-    loadChildren: () => import('./corbeille/corbeille.module').then( m => m.CorbeillePageModule)
-  }
-
 ];
 
 @NgModule({

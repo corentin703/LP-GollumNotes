@@ -1,11 +1,9 @@
 export interface Note{
-  Id:string;
-  Description:string;
+  id: string;
+  description: string;
 }
 
-export function createNote(Id:string,Description:string): Note {
-  return {
-    Id,
-    Description
-    }
-}
+export const createNote = (id: string,description: string): Note => ({
+    id,
+    description
+    });

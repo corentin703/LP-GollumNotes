@@ -8,8 +8,8 @@ import { NotesPageRoutingModule } from './notes-routing.module';
 
 import { NotesPage } from './notes.page';
 
-import { NoteComponent } from '../note/note.component';
-import { AddNoteComponent } from '../component/add-note/add-note.component';
+import { NoteComponent } from '../../components/note/note.component';
+import { AddNoteComponent } from '../../components/add-note/add-note.component';
 
 @NgModule({
   imports: [

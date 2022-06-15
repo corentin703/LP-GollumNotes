@@ -1,12 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {Note} from '../services/http/note.service.type';
-import {NoteService} from '../services/http/note.service';
-import {PictureService} from '../services/http/picture.service';
-import {PhotoService} from '../services/photo.service';
+import {Note} from '../../services/http/note.service.type';
+import {NoteService} from '../../services/http/note.service';
+import {PictureService} from '../../services/http/picture.service';
+import {PhotoService} from '../../services/photo.service';
 import { PhotoLibrary } from '@awesome-cordova-plugins/photo-library/ngx';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import {imageSourceToPath} from 'cordova-res/dist/platform';
-import {log} from "util";
 // import {Note } from '../@entities/Note';
 // import {createNote } from '../@entities/Note';
 ////
@@ -40,8 +39,6 @@ export class NoteComponent implements OnInit {
     private camera: Camera
   ) {
   // this.note = createNote("idstring", "descriptionstring")
-
-
  }
 
   ngOnInit() {

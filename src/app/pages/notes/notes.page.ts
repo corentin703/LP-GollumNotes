@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-// import {Note } from '../@entities/Note';
-import {Profile,createProfile } from '../@entities/Profile';
-import {createNote} from '../@entities/Note';
-import {NoteService} from '../services/http/note.service';
-import {AccountService} from '../services/http/account.service';
-import {Note, CreateNoteRequest} from '../services/http/note.service.type';
+// import {Note } from '../../@entities/Note';
+// import {Profile,createProfile } from '../../@entities/Profile';
+import {Note} from '../../services/http/note.service.type';
+import {createNote} from '../../@entities/Note';
+import {NoteService} from '../../services/http/note.service';
+import {AccountService} from '../../services/http/account.service';
+import {Photo} from '@capacitor/camera';
 
 @Component({
   selector: 'app-notes',
@@ -65,10 +66,18 @@ export class NotesPage implements OnInit {
         console.log('retour getAllNote', getAllRes.data);
 
         getAllRes.data.forEach(element => {
-          const note: Note = {
+          const note: {
+            id: string;
+            content: string;
+            title: string;
+            createdAt: Date;
+            lastModifiedAt: Date;
+            pictures: Photo[];
+          } = {
             id: element.id,
-            title: element.title,
             content: element.content,
+            title: element.title,
+            // content: element.content,
             createdAt: element.createdAt,
             lastModifiedAt: element.lastModifiedAt,
             pictures: element.pictures
