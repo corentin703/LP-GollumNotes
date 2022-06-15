@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {Note} from '../services/http/note.service.type';
 import {NoteService} from '../services/http/note.service';
 import { PhotoLibrary } from '@awesome-cordova-plugins/photo-library/ngx';
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
+import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import {imageSourceToPath} from 'cordova-res/dist/platform';
 // import {Note } from '../@entities/Note';
 // import {createNote } from '../@entities/Note';
