@@ -19,9 +19,9 @@ export class PictureService {
     private httpClient: HttpClient,
     private download: DownloadService,
   ) {
-    configService.getConfig().subscribe(config => {
-      this.config = config;
-    });
+    // configService.getConfig().subscribe(config => {
+    //   this.config = config;
+    // });
   }
 
   public getAll(noteId: string): Observable<Payload<PictureResponse[]>> {

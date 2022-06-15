@@ -1,9 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {Note} from '../services/http/note.service.type';
 import {NoteService} from '../services/http/note.service';
+import {PictureService} from '../services/http/picture.service';
+import {PhotoService} from '../services/photo.service';
 import { PhotoLibrary } from '@awesome-cordova-plugins/photo-library/ngx';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import {imageSourceToPath} from 'cordova-res/dist/platform';
+import {log} from "util";
 // import {Note } from '../@entities/Note';
 // import {createNote } from '../@entities/Note';
 ////
@@ -31,6 +34,8 @@ export class NoteComponent implements OnInit {
 
   constructor(
     private readonly noteService: NoteService,
+    // private readonly pictureService: PictureService,
+    private readonly photoService: PhotoService,
     // private photoLibrary: PhotoLibrary,
     private camera: Camera
   ) {
@@ -104,19 +109,30 @@ export class NoteComponent implements OnInit {
     //   .catch(err => console.log('permissions weren\'t granted'));
   }
 
-  takePicture() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-    });
+  public  takePicture() {
+
+    const newPhoto = this.photoService.takePhoto();
+
+    newPhoto.then(
+      value => {
+        console.log('sucess ' + value.dataUrl);
+      }
+    );
+
+    // console.log('new pic : ' + newPhoto.);
   }
+  //   const options: CameraOptions = {
+  //     quality: 100,
+  //     destinationType: this.camera.DestinationType.FILE_URI,
+  //     encodingType: this.camera.EncodingType.JPEG,
+  //     mediaType: this.camera.MediaType.PICTURE
+  //   };
+  //   this.camera.getPicture(options).then((imageData) => {
+  //     // imageData is either a base64 encoded string or a file URI
+  //     // If it's base64 (DATA_URL):
+  //     let base64Image = 'data:image/jpeg;base64,' + imageData;
+  //   }, (err) => {
+  //     // Handle error
+  //   });
+  // }
 }
