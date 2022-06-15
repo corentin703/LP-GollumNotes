@@ -21,10 +21,7 @@ export class LoginPage implements OnInit {
 
   public onConnectionClick() {
     this.accountService.login(this.username, this.password)
-      .subscribe(response => {
-        alert(response.data?.username);
-        this.router.navigateByUrl('/notes');
-      });
+      .subscribe(() => this.router.navigateByUrl('/notes'));
   }
 
   public onSubscriptionClick() {
