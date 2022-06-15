@@ -16,6 +16,7 @@ import {AuthGuardService} from './services/router/auth-guard.service';
 import { Camera } from '@ionic-native/camera/ngx';
 
 
+
 @NgModule({
   declarations: [AppComponent, LoadingComponent],
   entryComponents: [],

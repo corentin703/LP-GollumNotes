@@ -112,7 +112,16 @@ export class NoteComponent implements OnInit {
 
     newPhoto.then(
       value => {
-        console.log('sucess ' + value.dataUrl);
+        console.log(
+          'dataUrl ' + value.dataUrl
+        + '\nformat '+ value.format
+        + '\npath '+ value.path
+        + '\nwebPath '+ value.webPath
+        + '\nbase64String '+ value.base64String
+        + '\nexif '+ value.exif
+        + '\nsaved '+ value.saved
+        );
+        this.note.pictures.push(newPhoto);
       }
     );
 
