@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {ConfigService} from '@app/services/config.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {LoginResponse, RegisterResponse} from './account.service.type';
+import {LoginResponse, RegisterResponse} from './account-http.service.type';
 import {Payload} from './common.type';
 import {tap} from 'rxjs/operators';
 import {AuthTokenService} from '@/app/services/auth-token.service';
@@ -12,7 +12,7 @@ import {HttpBaseService} from '@app/services/http/http-baseService';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService extends HttpBaseService {
+export class AccountHttpService extends HttpBaseService {
 
   constructor(
     configService: ConfigService,

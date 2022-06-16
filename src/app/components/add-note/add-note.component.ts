@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NoteService} from '@app/services/http/note.service';
+import {NoteHttpService} from '@app/services/http/note-http.service';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ export class AddNoteComponent implements OnInit {
   private title$: string;
   private content$: string;
 
-  constructor(private noteService: NoteService) { }
+  constructor(private noteService: NoteHttpService) { }
 
   public get titleControl(): AbstractControl {
     return this.noteForm?.get('title');

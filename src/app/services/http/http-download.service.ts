@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class DownloadService {
+export class HttpDownloadService {
 
   constructor(private http: HttpClient) { }
 

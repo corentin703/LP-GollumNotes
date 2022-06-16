@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {NoteService} from '@app/services/http/note.service';
-import {AccountService} from '@app/services/http/account.service';
+import {NoteHttpService} from '@app/services/http/note-http.service';
+import {AccountHttpService} from '@app/services/http/account-http.service';
 import {Photo} from '@capacitor/camera';
 import {Note} from '@app/entities/Note';
 import {IonRouterOutlet} from '@ionic/angular';
@@ -16,7 +16,7 @@ export class NotesPage implements OnInit {
   public isAddingModalOpened = false;
 
   constructor(
-    private noteService: NoteService,
+    private noteService: NoteHttpService,
     public routerOutlet: IonRouterOutlet,
   ) { }
 
