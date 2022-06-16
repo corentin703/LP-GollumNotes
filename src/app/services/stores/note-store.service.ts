@@ -4,11 +4,14 @@ import {Note} from '@app/entities/Note';
 import {NoteHttpService} from '@app/services/http/note-http.service';
 import {map, tap} from 'rxjs/operators';
 import {CreateNoteRequest, UpdateNoteRequest} from '@app/services/http/note-http.service.type';
+import {IEntityStoreService} from '@app/contracts/services/stores/entity-store-service';
+import {Payload} from '@app/services/http/common.type';
+import {resetFakeAsyncZone} from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NoteStoreService {
+export class NoteStoreService implements IEntityStoreService<Note, CreateNoteRequest, UpdateNoteRequest> {
   private readonly notes$ = new BehaviorSubject<Note[]>(undefined);
 
   constructor(
@@ -36,36 +39,27 @@ export class NoteStoreService {
       );
   }
 
-  public create(body: CreateNoteRequest): Observable<Note> {
+  public create(body: CreateNoteRequest): Observable<Payload<Note>> {
     return this.noteHttpService.create(body)
       .pipe(
-        map(response => {
-          if (response.data === undefined) {
-            return null;
-          }
-
-          return response.data;
-        })
-      )
-      .pipe(
-        tap(createdNote => {
-          if (createdNote === null) {
+        tap(response => {
+          if (response.data === null) {
             return;
           }
 
           this.notes$.next([
             ...this.notes$.value,
-            createdNote
+            response.data
           ]);
         })
       );
   }
 
-  public update(id: string, body: UpdateNoteRequest): Observable<Note> {
+  public update(id: string, body: UpdateNoteRequest): Observable<Payload<Note>> {
     return from(this.handleUpdate(id, body));
   }
 
-  public delete(id: string): Observable<void> {
+  public delete(id: string): Observable<Payload<void>> {
     return this.noteHttpService.delete(id)
       .pipe(tap(_ =>
         this.notes$.next(
@@ -74,8 +68,15 @@ export class NoteStoreService {
       ));
   }
 
-  private async handleUpdate(id: string, body: UpdateNoteRequest): Promise<Note> {
-    await this.noteHttpService.update(id, body);
+  private async handleUpdate(id: string, body: UpdateNoteRequest): Promise<Payload<Note>> {
+    const response = await this.noteHttpService.update(id, body).toPromise();
+    if (response.errors !== undefined) {
+      return {
+        ...response,
+        data: null,
+      };
+    }
+
     const filteredNotes = this.notes$.value.filter(note => note.id !== id);
     const updatingNote = await this.getById(id).toPromise();
 
@@ -94,7 +95,10 @@ export class NoteStoreService {
       updatedNote
     ]);
 
-    return updatedNote;
+    return {
+      ...response,
+      data: updatedNote,
+    };
   }
 
   private refreshCollection() {
