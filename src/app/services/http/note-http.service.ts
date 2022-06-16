@@ -6,11 +6,22 @@ import {Observable} from 'rxjs';
 import {Payload} from './common.type';
 import {HttpBaseService} from '@app/services/http/http-baseService';
 import {Note} from '@/app/entities/Note';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoteHttpService extends HttpBaseService {
+  private mapEmptyResponses = map<Payload<void>, Payload<void>>(response => {
+    if (response !== undefined && response !== null) {
+      return response;
+    }
+
+    return {
+      messages: []
+    };
+  });
+
   constructor(
     configService: ConfigService,
     private httpClient: HttpClient,
@@ -38,15 +49,17 @@ export class NoteHttpService extends HttpBaseService {
     );
   }
 
-  public update(id: string, body: UpdateNoteRequest): Observable<void> {
+  public update(id: string, body: UpdateNoteRequest): Observable<Payload<void>> {
     return this.fromEndpoint(endpoint =>
-      this.httpClient.put<void>(`${endpoint}/${id}`, body)
+      this.httpClient.put<Payload<void>>(`${endpoint}/${id}`, body)
+        .pipe(this.mapEmptyResponses)
     );
   }
 
-  public delete(id: string): Observable<void> {
+  public delete(id: string): Observable<Payload<void>> {
     return this.fromEndpoint(endpoint =>
-      this.httpClient.delete<void>(`${endpoint}/${id}`)
+      this.httpClient.delete<Payload<void>>(`${endpoint}/${id}`)
+        .pipe(this.mapEmptyResponses)
     );
   }
 

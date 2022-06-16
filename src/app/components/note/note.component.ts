@@ -1,9 +1,9 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {NoteHttpService} from '@app/services/http/note-http.service';
 import {PhotoService} from '@app/services/photo.service';
 import {Camera} from '@ionic-native/camera/ngx';
 import {Note} from '@app/entities/Note';
-import {AbstractControl, FormControl, FormGroup, Validator, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {NoteStoreService} from '@app/services/stores/note-store.service';
 
 @Component({
   selector: 'app-note',
@@ -19,7 +19,7 @@ export class NoteComponent implements OnInit {
   public isEditing = false;
 
   constructor(
-    private readonly noteService: NoteHttpService,
+    private readonly noteStoreService: NoteStoreService,
     private readonly photoService: PhotoService,
     private camera: Camera
   ) { }
@@ -64,7 +64,7 @@ export class NoteComponent implements OnInit {
   }
 
   public delete() {
-    this.noteService.delete(
+    this.noteStoreService.delete(
       this.id
     ).subscribe(result => {
       console.log('Note supprimée', result);
@@ -76,7 +76,7 @@ export class NoteComponent implements OnInit {
   }
 
   public commitUpdate() {
-    this.noteService.update(
+    this.noteStoreService.update(
       this.id,
       this.noteForm.value
     ).subscribe(result => {
