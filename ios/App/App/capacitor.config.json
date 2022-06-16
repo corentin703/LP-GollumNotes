@@ -1,6 +1,6 @@
 {
 	"appId": "io.ionic.starter",
-	"appName": "Gollum Chat",
+	"appName": "Gollum Notes",
 	"webDir": "www",
 	"bundledWebRuntime": false
 }
