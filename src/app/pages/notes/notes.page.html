@@ -5,9 +5,20 @@
 </ion-header>
 
 <ion-content>
-  <app-add-note></app-add-note>
   <ion-list>
-    <li *ngFor="let note of notes"><app-note [note]=note> </app-note></li>
+    <li *ngFor="let note of notes"><app-note class="ion-margin-vertical" [note]=note> </app-note></li>
   </ion-list>
 <!--  <ion-item></ion-item>-->
 </ion-content>
+
+<ion-modal trigger="open-add-modal-button" [swipeToClose]="true" [presentingElement]="routerOutlet.nativeEl">
+  <ng-template>
+    <app-add-note-modal-content></app-add-note-modal-content>
+  </ng-template>
+</ion-modal>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button>
+    <ion-icon name="add" id="open-add-modal-button"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
