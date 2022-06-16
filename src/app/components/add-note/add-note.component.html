@@ -1,6 +1,17 @@
-<ion-item style="display: flex">
-  <ion-label position="stacked" class="ion-float-left">Ajouter une note</ion-label>
-  <ion-input [(ngModel)]="title" placeholder='Ajouter un titre' class="ion-float-center"></ion-input>
-  <ion-input [(ngModel)]="content" placeholder='Contenu...' class="ion-float-center"></ion-input>
-  <button item-right (click)="addNewNote()" class="ion-align-self-start ion-float-right"> Ajouter la note</button>
-</ion-item>
+<form [formGroup]="noteForm" (ngSubmit)="commitAdd()" novalidate>
+  <ion-item lines="full">
+    <ion-label position="floating">Titre</ion-label>
+    <ion-input placeholder="Titre" formControlName="title"></ion-input>
+  </ion-item>
+  <ion-item lines="full">
+    <ion-label position="floating">Contenu</ion-label>
+    <ion-input placeholder="Contenu" formControlName="content"></ion-input>
+  </ion-item>
+  <ion-item lines="full">
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button type="submit" expand="block" color="primary">Ajouter</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-item>
+</form>

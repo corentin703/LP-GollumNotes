@@ -3,6 +3,7 @@ import {NoteService} from '@app/services/http/note.service';
 import {AccountService} from '@app/services/http/account.service';
 import {Photo} from '@capacitor/camera';
 import {Note} from '@app/entities/Note';
+import {IonRouterOutlet} from '@ionic/angular';
 
 @Component({
   selector: 'app-notes',
@@ -12,17 +13,18 @@ import {Note} from '@app/entities/Note';
 export class NotesPage implements OnInit {
 
   public notes: Note[] = [];
+  public isAddingModalOpened = false;
 
   constructor(
     private noteService: NoteService,
-
+    public routerOutlet: IonRouterOutlet,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     //
   }
 
-  ionViewDidEnter() {
+  public ionViewDidEnter() {
     // this.noteCrudService.getNotes().subscribe((response) => {
     //   this.notes = response;
     // })
@@ -77,5 +79,4 @@ export class NotesPage implements OnInit {
     //   }
     // );
   }
-
 }
