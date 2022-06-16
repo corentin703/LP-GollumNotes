@@ -2,20 +2,20 @@ import { Injectable } from '@angular/core';
 import {ConfigService} from '@app/services/config.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PictureResponse} from './picture.service.type';
+import {PictureResponse} from './picture-http.service.type';
 import {Payload} from './common.type';
-import {DownloadService} from './download.service';
+import {HttpDownloadService} from './http-download.service';
 import {HttpBaseService} from '@app/services/http/http-baseService';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PictureService extends HttpBaseService {
+export class PictureHttpService extends HttpBaseService {
 
   constructor(
     private configService: ConfigService,
     private httpClient: HttpClient,
-    private download: DownloadService,
+    private download: HttpDownloadService,
   ) {
     super(configService);
   }

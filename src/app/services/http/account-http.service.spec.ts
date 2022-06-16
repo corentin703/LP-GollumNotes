@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AccountService } from './account.service';
+import { AccountHttpService } from './account-http.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Config} from '../config.service.type';
-import {RegisterResponse} from './account.service.type';
+import {RegisterResponse} from './account-http.service.type';
 import {faker} from '@faker-js/faker';
 import {ConfigService} from '../config.service';
 import {of} from 'rxjs';
@@ -12,7 +12,7 @@ import createSpyObj = jasmine.createSpyObj;
 import {HttpClient} from '@angular/common/http';
 
 describe('AccountService', () => {
-  let accountService: AccountService;
+  let accountService: AccountHttpService;
   let configService: ConfigService;
   let httpTestingController: HttpTestingController;
 
@@ -32,7 +32,7 @@ describe('AccountService', () => {
       imports: [ HttpClientTestingModule ],
       providers: [
         {provide: ConfigService, useValue: configService},
-        AccountService,
+        AccountHttpService,
       ]
     }).compileComponents();
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -45,7 +45,7 @@ describe('AccountService', () => {
       }
     ));
 
-    accountService = new AccountService(
+    accountService = new AccountHttpService(
       configService,
       TestBed.inject(HttpClient)
     );

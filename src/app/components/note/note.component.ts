@@ -1,5 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {NoteService} from '@app/services/http/note.service';
+import {NoteHttpService} from '@app/services/http/note-http.service';
 import {PhotoService} from '@app/services/photo.service';
 import {Camera} from '@ionic-native/camera/ngx';
 import {Note} from '@app/entities/Note';
@@ -19,7 +19,7 @@ export class NoteComponent implements OnInit {
   public isEditing = false;
 
   constructor(
-    private readonly noteService: NoteService,
+    private readonly noteService: NoteHttpService,
     private readonly photoService: PhotoService,
     private camera: Camera
   ) { }

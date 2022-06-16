@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AccountService} from '@app/services/http/account.service';
+import {AccountHttpService} from '@app/services/http/account-http.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ export class RegisterPage implements OnInit {
   public password: string;
 
   constructor(
-    private accountService: AccountService,
+    private accountService: AccountHttpService,
     private router: Router
   ) { }
 

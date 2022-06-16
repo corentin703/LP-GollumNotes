@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AuthTokenService} from '@app/services/auth-token.service';
-import {fromPromise} from 'rxjs/internal-compatibility';
+import {fromPromise} from 'rxjs-compat/observable/fromPromise';
+
 
 @Injectable()
 export class HttpAuthorizationInterceptor implements HttpInterceptor {

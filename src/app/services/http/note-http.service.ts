@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from '@app/services/config.service';
 import {HttpClient} from '@angular/common/http';
-import {CreateNoteRequest, UpdateNoteRequest} from './note.service.type';
+import {CreateNoteRequest, UpdateNoteRequest} from './note-http.service.type';
 import {Observable} from 'rxjs';
 import {Payload} from './common.type';
 import {HttpBaseService} from '@app/services/http/http-baseService';
@@ -10,7 +10,7 @@ import {Note} from '@/app/entities/Note';
 @Injectable({
   providedIn: 'root'
 })
-export class NoteService extends HttpBaseService {
+export class NoteHttpService extends HttpBaseService {
   constructor(
     configService: ConfigService,
     private httpClient: HttpClient,
