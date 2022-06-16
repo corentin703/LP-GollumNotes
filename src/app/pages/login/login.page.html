@@ -7,14 +7,13 @@
 <ion-content>
   <ion-item>
     <ion-label>Nom d'utilisateur</ion-label>
-    <ion-input
-        placeholder="Nom d'utilisateur" [(ngModel)]="username"
-    ></ion-input>
+    <ion-input type="text" placeholder="Nom d'utilisateur" [(ngModel)]="username"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label>Mot de passe</ion-label>
     <ion-input
+        type="password"
         placeholder="Mot de passe"
         [(ngModel)]="password"
     ></ion-input>

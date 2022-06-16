@@ -1,91 +1,55 @@
-<div>
-  <ion-card *ngIf="!isEditing else editing">
-    <ion-card-header>
-      <ion-card-subtitle>Créée le {{ createdAt }}</ion-card-subtitle>
-      <ion-card-title>{{ title }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p class="ion-margin-bottom">{{ content }}</p>
+<ion-card *ngIf="!isEditing else editing">
+  <ion-card-header>
+    <ion-card-subtitle>Créée le {{ createdAt  | date }}</ion-card-subtitle>
+    <ion-card-title>{{ title }}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <p class="ion-margin-bottom">{{ content }}</p>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button fill="clear" color="primary" id="photo-menu-btn">
+          <ion-icon name="camera-outline"></ion-icon>
+        </ion-button>
+
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="delete()" expand="block" color="danger">Supprimer</ion-button>
+        <ion-button (click)="update()" expand="block">Modifier</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-card-content>
+</ion-card>
+
+<ion-popover trigger="photo-menu-btn">
+  <ng-template>
+    <ion-list>
+      <ion-list-header>Photos</ion-list-header>
+      <ion-item button (click)="takePicture()" expand="block">Prendre photo</ion-item>
+      <ion-item button (click)="addPicture()" expand="block">Ajouter photo</ion-item>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+<ng-template #editing>
+  <form [formGroup]="noteForm" (ngSubmit)="commitUpdate()" novalidate>
+    <ion-item lines="full">
+      <ion-label position="floating">Titre</ion-label>
+      <ion-input placeholder="Titre" formControlName="title"></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Contenu</ion-label>
+      <ion-input placeholder="Contenu" formControlName="content"></ion-input>
+    </ion-item>
+    <ion-item lines="full">
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-button (click)="takePicture()" expand="block">Prendre Photo</ion-button>
-          <ion-button (click)="addPicture()" expand="block">Ajouter Photo</ion-button>
+          <ion-button (click)="delete()" expand="block" color="danger">Supprimer</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button (click)="delete()" expand="block" color="danger">Supprimer</ion-button>
-          <ion-button (click)="update()" expand="block">Modifier</ion-button>
+          <ion-button (click)="cancelUpdate()" expand="block">Annuler</ion-button>
+          <ion-button type="submit" expand="block" color="warning">Valider</ion-button>
         </ion-buttons>
       </ion-toolbar>
-    </ion-card-content>
-  </ion-card>
-  <ng-template #editing>
-    <form [formGroup]="noteForm" (ngSubmit)="commitUpdate()" novalidate>
-      <ion-item lines="full">
-        <ion-label position="floating">Titre</ion-label>
-        <ion-input placeholder="Titre" formControlName="title"></ion-input>
-      </ion-item>
-      <ion-item lines="full">
-        <ion-label position="floating">Contenu</ion-label>
-        <ion-input placeholder="Contenu" formControlName="content"></ion-input>
-      </ion-item>
-      <ion-item lines="full">
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="delete()" expand="block" color="danger">Supprimer</ion-button>
-          </ion-buttons>
-          <ion-buttons slot="end">
-            <ion-button (click)="cancelUpdate()" expand="block">Annuler</ion-button>
-            <ion-button type="submit" expand="block" color="warning">Valider</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-item>
-    </form>
-  </ng-template>
-
-<!--  <ion-grid>-->
-<!--    <ion-row>-->
-<!--        <ion-icon name="document-outline"></ion-icon>-->
-<!--        <h4>{{ note.content }}</h4>-->
-<!--    </ion-row>-->
-<!--  </ion-grid>-->
-
-<!--  <ion-item>-->
-<!--    <ion-icon name="document-outline"></ion-icon>-->
-<!--    <ion-item>-->
-<!--      <ion-label>Titre</ion-label>-->
-<!--      <ion-input-->
-<!--        placeholder="Titre"-->
-<!--        [(ngModel)]="title"-->
-<!--        [contentEditable]="editableTitle"-->
-<!--      ></ion-input>-->
-<!--    </ion-item>-->
-<!--    <ion-item>-->
-<!--      <ion-label>Contenu</ion-label>-->
-<!--      <ion-input-->
-<!--        placeholder="Contenu"-->
-<!--        [(ngModel)]="content"-->
-<!--        [contentEditable]="editableContent"-->
-<!--      ></ion-input>-->
-<!--    </ion-item>-->
-
-<!--    <ion-button (click)="takePicture()" expand="block">Prendre Photo</ion-button>-->
-<!--    <ion-button (click)="addPicture()" expand="block">Ajouter Photo</ion-button>-->
-<!--    <ion-button [hidden]=isHiddenUpdateButton (click)="updateNote()" expand="block">Modifier</ion-button>-->
-<!--    <ion-button [hidden]=isHiddenCommitUpdateButton (click)="commitUpdateNote()" expand="block">Valider</ion-button>-->
-<!--    <ion-button (click)="deleteNote()" expand="block">Supprimer</ion-button>-->
-
-
-<!--    <ion-grid>-->
-<!--      <ion-row>-->
-<!--        <ion-col size="6" >-->
-<!--          &lt;!&ndash; *ngFor="let photo of photoService.photos; index as position"&ndash;&gt;-->
-<!--          <ion-img >-->
-<!--&lt;!&ndash;            [src]="photo.webviewPath"&ndash;&gt;-->
-<!--          </ion-img>-->
-<!--        </ion-col>-->
-<!--      </ion-row>-->
-<!--    </ion-grid>-->
-
-<!--  </ion-item>-->
-
-</div>
+    </ion-item>
+  </form>
+</ng-template>
