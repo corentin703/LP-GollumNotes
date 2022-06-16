@@ -1,8 +1,5 @@
-import { Component, OnInit, ComponentFactory, ViewChild  } from '@angular/core';
-import { NoteComponent } from '../note/note.component';
-import {NoteService} from "../../services/http/note.service";
-
-
+import { Component, OnInit  } from '@angular/core';
+import {NoteService} from '@app/services/http/note.service';
 
 @Component({
   selector: 'app-add-note',
@@ -10,7 +7,6 @@ import {NoteService} from "../../services/http/note.service";
   styleUrls: ['./add-note.component.scss'],
 })
 export class AddNoteComponent implements OnInit {
-
   public title: string;
   public content: string;
 
@@ -26,6 +22,4 @@ export class AddNoteComponent implements OnInit {
       console.log('Note créée', result);
     });
   }
-
-
 }

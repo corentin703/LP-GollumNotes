@@ -5,15 +5,12 @@ import { Storage } from '@ionic/storage';
   providedIn: 'root'
 })
 export class StorageService {
-  // private storage: Storage | null = null;
-
   private readonly initializeState: Promise<Storage>;
 
   constructor(
     private storage: Storage
   ) {
     this.initializeState = storage.create().then();
-    // this.init().then(r => console.log('Storage initialized'));
   }
 
   async delete(key: string): Promise<void> {
@@ -30,9 +27,4 @@ export class StorageService {
     await this.initializeState;
     await this.storage.set(key, data);
   }
-
-  // private async init() {
-  //   this.storage = await this.service.create();
-  // }
-
 }

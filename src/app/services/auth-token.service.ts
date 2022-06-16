@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {StorageService} from '../storage.service';
+import {StorageService} from './storage.service';
 import {AuthenticationState} from './auth-token-service.type';
 import {Observable} from 'rxjs';
 import {fromPromise} from 'rxjs/internal-compatibility';
