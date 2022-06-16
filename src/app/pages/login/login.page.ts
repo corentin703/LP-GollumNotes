@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AccountService} from '../../services/http/account.service';
+import {AccountService} from '@app/services/http/account.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -17,6 +17,7 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    //
   }
 
   public onConnectionClick() {

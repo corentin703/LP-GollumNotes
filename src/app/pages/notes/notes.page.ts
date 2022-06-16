@@ -1,12 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-
-// import {Note } from '../../@entities/Note';
-// import {Profile,createProfile } from '../../@entities/Profile';
-import {Note} from '../../services/http/note.service.type';
-import {createNote} from '../../@entities/Note';
-import {NoteService} from '../../services/http/note.service';
-import {AccountService} from '../../services/http/account.service';
+import {Component, OnInit} from '@angular/core';
+import {NoteService} from '@app/services/http/note.service';
+import {AccountService} from '@app/services/http/account.service';
 import {Photo} from '@capacitor/camera';
+import {Note} from '@app/entities/Note';
 
 @Component({
   selector: 'app-notes',
@@ -15,29 +11,15 @@ import {Photo} from '@capacitor/camera';
 })
 export class NotesPage implements OnInit {
 
-  // noteCrudService: NoteCrudService = new NoteCrudService()
-  notes: Note[] = [];
+  public notes: Note[] = [];
 
   constructor(
     private noteService: NoteService,
-    private accountService: AccountService,
 
-  ) {
-
-  // noteCrudService
-  //   .getNotes()
-  //   .subscribe(notes => this.notes = notes)
-
-
-  // let note = createNote("idstring", "descriptionstring")
-  // this.notes.push(note)
-
-  // console.log(note.Description)
-  }
-
-
+  ) { }
 
   ngOnInit() {
+    //
   }
 
   ionViewDidEnter() {
@@ -46,13 +28,6 @@ export class NotesPage implements OnInit {
     // })
 
     // let newNote: CreateNoteRequest = { title: "titileTest", content: "contentTest" };
-
-
-    this.accountService.login('identifiant2Profile', 'passwordProfile').subscribe(
-      loginRes => {
-        console.log('retour login', loginRes);
-      }
-    );
 
     // this.noteService.create(newNote).subscribe(
     //   createRes => {
@@ -77,13 +52,11 @@ export class NotesPage implements OnInit {
             id: element.id,
             content: element.content,
             title: element.title,
-            // content: element.content,
             createdAt: element.createdAt,
             lastModifiedAt: element.lastModifiedAt,
             pictures: element.pictures
           };
           this.notes.push(note);
-
 
           console.log('title ' + element.title);
 

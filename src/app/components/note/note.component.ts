@@ -1,16 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import {Note} from '../../services/http/note.service.type';
-import {NoteService} from '../../services/http/note.service';
-import {PictureService} from '../../services/http/picture.service';
-import {PhotoService} from '../../services/photo.service';
-import { PhotoLibrary } from '@awesome-cordova-plugins/photo-library/ngx';
-import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
-import {imageSourceToPath} from 'cordova-res/dist/platform';
-// import {Note } from '../@entities/Note';
-// import {createNote } from '../@entities/Note';
-////
-//import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-// import { CustomComponent } from './custom.component';
+import {Component, OnInit, Input} from '@angular/core';
+import {NoteService} from '@app/services/http/note.service';
+import {PhotoService} from '@app/services/photo.service';
+import {Camera} from '@ionic-native/camera/ngx';
+import {Note} from '@app/entities/Note';
+import {AbstractControl, FormControl, FormGroup, Validator, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-note',
@@ -19,38 +12,58 @@ import {imageSourceToPath} from 'cordova-res/dist/platform';
 })
 export class NoteComponent implements OnInit {
 
-  @Input() note: Note;
+  @Input() public note: Note;
 
-  id;
-  title;
-  content;
-  editableTitle = false;
-  editableContent = false;
-  ishiddenUpdateButton = false;
-  ishiddenCommitUpdateButton = true;
+  public noteForm: FormGroup;
 
-
+  public isEditing = false;
 
   constructor(
     private readonly noteService: NoteService,
-    // private readonly pictureService: PictureService,
     private readonly photoService: PhotoService,
-    // private photoLibrary: PhotoLibrary,
     private camera: Camera
-  ) {
-  // this.note = createNote("idstring", "descriptionstring")
- }
+  ) { }
 
-  ngOnInit() {
-    this.id = this.note.id;
-    this.title = this.note.title;
-    this.content = this.note.content;
-    console.log(this.note.id);
-    // content =""
+  public get id(): string {
+    return this.note.id;
   }
 
+  public get title(): string {
+    return this.note.title;
+  }
 
-  deleteNote() {
+  public get content(): string {
+    return this.note.content;
+  }
+
+  public get createdAt(): Date {
+    return this.note.createdAt;
+  }
+
+  public get titleControl(): AbstractControl {
+    return this.noteForm?.get('title');
+  }
+
+  public get contentControl(): AbstractControl {
+    return this.noteForm?.get('content');
+  }
+
+  public ngOnInit() {
+    this.noteForm = new FormGroup({
+      title: new FormControl(this.note.title, [
+        Validators.required,
+        Validators.minLength(1)
+      ]),
+      content: new FormControl(this.note.content, [
+        Validators.required,
+        Validators.minLength(1)
+      ]),
+    });
+
+    console.log(this.note.id);
+  }
+
+  public delete() {
     this.noteService.delete(
       this.id
     ).subscribe(result => {
@@ -58,30 +71,29 @@ export class NoteComponent implements OnInit {
     });
   }
 
-  updateNote() {
-    this.editableTitle=true;
-    this.editableContent=true;
-    this.ishiddenUpdateButton=true;
-    this.ishiddenCommitUpdateButton=false;
+  public update() {
+    this.isEditing = true;
   }
 
-  commitUpdateNote() {
+  public commitUpdate() {
     this.noteService.update(
       this.id,
-      {
-        title: this.title,
-        content: this.content,
-      }
+      this.noteForm.value
     ).subscribe(result => {
       console.log('Note mise à jour', result);
+      this.note.title = this.titleControl.value;
+      this.note.content = this.contentControl.value;
+      this.isEditing = false;
     });
-    this.editableTitle=false;
-    this.editableContent=false;
-    this.ishiddenUpdateButton=false;
-    this.ishiddenCommitUpdateButton=true;
   }
 
-  addPicture() {
+  public cancelUpdate() {
+    this.titleControl.setValue(this.title);
+    this.contentControl.setValue(this.content);
+    this.isEditing = false;
+  }
+
+  public addPicture() {
     // this.photoLibrary.requestAuthorization().then(() => {
     //   this.photoLibrary.getLibrary().subscribe({
     //     next: library => {
@@ -106,7 +118,7 @@ export class NoteComponent implements OnInit {
     //   .catch(err => console.log('permissions weren\'t granted'));
   }
 
-  public  takePicture() {
+  public takePicture() {
 
     const newPhoto = this.photoService.takePhoto();
 

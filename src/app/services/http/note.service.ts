@@ -1,47 +1,56 @@
-import { Injectable } from '@angular/core';
-import {Config} from '../config.service.type';
-import {ConfigService} from '../config.service';
+import {Injectable} from '@angular/core';
+import {ConfigService} from '@app/services/config.service';
 import {HttpClient} from '@angular/common/http';
-import {CreateNoteRequest, Note, UpdateNoteRequest} from './note.service.type';
-import {Observable, of} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
+import {CreateNoteRequest, UpdateNoteRequest} from './note.service.type';
+import {Observable} from 'rxjs';
 import {Payload} from './common.type';
+import {HttpBaseService} from '@app/services/http/http-baseService';
+import {Note} from '@/app/entities/Note';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NoteService {
-  private config: Config;
-
+export class NoteService extends HttpBaseService {
   constructor(
-    private configService: ConfigService,
+    configService: ConfigService,
     private httpClient: HttpClient,
   ) {
-    this.config = configService.getConfig();
-  }
-
-  private get baseUrl() {
-    return `${this.config.webService.url}/notes`;
+    super(configService);
   }
 
   public getAll(): Observable<Payload<Note[]>> {
-    return this.httpClient.get<Payload<Note[]>>(this.baseUrl);
+    return this.fromEndpoint(endpoint =>
+      this.httpClient.get<Payload<Note[]>>(endpoint)
+    );
   }
 
   public getById(id): Observable<Payload<Note[]>> {
-    return this.httpClient.get<Payload<Note[]>>(`${this.baseUrl}/${id}`);
+    return this.fromEndpoint(endpoint =>
+      this.httpClient.get<Payload<Note[]>>(`${endpoint}/${id}`)
+    );
   }
 
   public create(body: CreateNoteRequest): Observable<Payload<Note>> {
     console.log(body);
-    return this.httpClient.post<Payload<Note>>(this.baseUrl, body);
+
+    return this.fromEndpoint(endpoint =>
+      this.httpClient.post<Payload<Note>>(endpoint, body)
+    );
   }
 
   public update(id: string, body: UpdateNoteRequest): Observable<void> {
-    return this.httpClient.put<void>(`${this.baseUrl}/${id}`, body);
+    return this.fromEndpoint(endpoint =>
+      this.httpClient.put<void>(`${endpoint}/${id}`, body)
+    );
   }
 
   public delete(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.baseUrl}/${id}`);
+    return this.fromEndpoint(endpoint =>
+      this.httpClient.delete<void>(`${endpoint}/${id}`)
+    );
+  }
+
+  protected getEndpoint(apiRootUrl: string): string {
+    return `${apiRootUrl}/notes`;
   }
 }

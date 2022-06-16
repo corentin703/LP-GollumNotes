@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {AccountService} from '../../services/http/account.service';
+import {Component, OnInit} from '@angular/core';
+import {AccountService} from '@app/services/http/account.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -23,7 +23,6 @@ export class RegisterPage implements OnInit {
     this.accountService.register(this.username, this.password)
       .subscribe(response => {
         if (response.data !== undefined) {
-          // this.router.navigateByUrl('/login');
           this.onReturnClick();
         }
       });

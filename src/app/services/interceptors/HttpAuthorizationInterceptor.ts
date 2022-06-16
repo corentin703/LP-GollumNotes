@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {AuthTokenService} from '../http/auth-token.service';
+import {AuthTokenService} from '@app/services/auth-token.service';
 import {fromPromise} from 'rxjs/internal-compatibility';
 
 @Injectable()
@@ -17,13 +17,13 @@ export class HttpAuthorizationInterceptor implements HttpInterceptor {
     const userToken = await this.authTokenService.get().toPromise();
 
     if (userToken == null) {
-      return next.handle(req).toPromise();
+      return await next.handle(req).toPromise();
     }
 
-    const modifiedReq = req.clone({
+    const authorizedRequest = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${userToken}`),
     });
 
-    return next.handle(modifiedReq).toPromise();
+    return await next.handle(authorizedRequest).toPromise();
   }
 }

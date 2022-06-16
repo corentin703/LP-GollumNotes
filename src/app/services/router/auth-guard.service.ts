@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {AuthTokenService} from '../http/auth-token.service';
+import {AuthTokenService} from '@app/services/auth-token.service';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {AuthenticationState} from '../http/auth-token-service.type';
+import {AuthenticationState} from '@app/services/auth-token-service.type';
 import {map} from 'rxjs/operators';
 
 @Injectable()

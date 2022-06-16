@@ -2,13 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {AuthenticatedLayoutPage} from './authenticated-layout.page';
 
-// const routes: Routes = [
-//   {
-//     path: '',
-//     component: AuthenticatedLayoutPage
-//   }
-// ];
-
 const routes: Routes = [
   {
     path: '',
@@ -16,19 +9,19 @@ const routes: Routes = [
     children: [
       {
         path: 'rappels',
-        loadChildren: () => import('../notes/rappels/rappels.module').then(m => m.RappelsPageModule)
+        loadChildren: () => import('@app/pages/notes/rappels/rappels.module').then(m => m.RappelsPageModule)
       },
       {
         path: 'archive',
-        loadChildren: () => import('../notes/archive/archive.module').then(m => m.ArchivePageModule)
+        loadChildren: () => import('@app/pages/notes/archive/archive.module').then(m => m.ArchivePageModule)
       },
       {
         path: 'corbeille',
-        loadChildren: () => import('../notes/corbeille/corbeille.module').then(m => m.CorbeillePageModule),
+        loadChildren: () => import('@app/pages/notes/corbeille/corbeille.module').then(m => m.CorbeillePageModule),
       },
       {
         path: '',
-        loadChildren: () => import('../notes/notes.module').then(m => m.NotesPageModule),
+        loadChildren: () => import('@app/pages/notes/notes.module').then(m => m.NotesPageModule),
       },
     ],
   },
