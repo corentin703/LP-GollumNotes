@@ -11,6 +11,8 @@ export class RegisterPage implements OnInit {
   public username: string;
   public password: string;
 
+  public errors: Array<string>;
+
   constructor(
     private accountService: AccountHttpService,
     private router: Router
@@ -22,6 +24,10 @@ export class RegisterPage implements OnInit {
   public onSubscriptionClick() {
     this.accountService.register(this.username, this.password)
       .subscribe(response => {
+        if (response.errors !== undefined) {
+          this.errors = response.errors;
+          return;
+        }
         if (response.data !== undefined) {
           this.onReturnClick();
         }

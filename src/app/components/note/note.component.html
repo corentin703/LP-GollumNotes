@@ -5,6 +5,13 @@
   </ion-card-header>
   <ion-card-content>
     <p class="ion-margin-bottom">{{ content }}</p>
+
+    <div *ngFor="let error of errors">
+      <ion-item >
+        <ion-label>Error: {{error}}</ion-label>
+      </ion-item>
+    </div>
+
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-button fill="clear" color="primary" id="photo-menu-btn">

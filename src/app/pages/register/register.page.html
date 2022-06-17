@@ -20,6 +20,12 @@
     ></ion-input>
   </ion-item>
 
+  <div *ngFor="let error of errors">
+    <ion-item >
+      <ion-label>Error: {{error}}</ion-label>
+    </ion-item>
+  </div>
+
   <ion-button (click)="onSubscriptionClick()">S'inscrire</ion-button>
   <ion-button (click)="onReturnClick()">Retour</ion-button>
 </ion-content>
