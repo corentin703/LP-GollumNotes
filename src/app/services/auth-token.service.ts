@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {StorageService} from './storage.service';
 import {AuthenticationState} from './auth-token-service.type';
-import {Observable} from 'rxjs';
-import {fromPromise} from 'rxjs/internal-compatibility';
+import {from, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -19,7 +18,7 @@ export class AuthTokenService {
     const getToken = async (): Promise<string | null> =>
       await this.storageService.get(this.storageKey);
 
-    return fromPromise(getToken());
+    return from(getToken());
   }
 
   public getAuthentificationState(): Observable<AuthenticationState> {

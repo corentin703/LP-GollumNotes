@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, from, Observable} from 'rxjs';
+import {BehaviorSubject, firstValueFrom, from, lastValueFrom, Observable} from 'rxjs';
 import {Note} from '@app/entities/Note';
 import {NoteHttpService} from '@app/services/http/note-http.service';
 import {map, tap} from 'rxjs/operators';
 import {CreateNoteRequest, UpdateNoteRequest} from '@app/services/http/note-http.service.type';
 import {IEntityStoreService} from '@app/contracts/services/stores/entity-store-service';
 import {Payload} from '@app/services/http/common.type';
-import {resetFakeAsyncZone} from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -69,7 +68,8 @@ export class NoteStoreService implements IEntityStoreService<Note, CreateNoteReq
   }
 
   private async handleUpdate(id: string, body: UpdateNoteRequest): Promise<Payload<Note>> {
-    const response = await this.noteHttpService.update(id, body).toPromise();
+    const response = await firstValueFrom(this.noteHttpService.update(id, body));
+
     if (response.errors !== undefined) {
       return {
         ...response,
@@ -78,18 +78,16 @@ export class NoteStoreService implements IEntityStoreService<Note, CreateNoteReq
     }
 
     const filteredNotes = this.notes$.value.filter(note => note.id !== id);
-    const updatingNote = await this.getById(id).toPromise();
+    const updatingNote = await firstValueFrom(this.getById(id));
 
     if (updatingNote === null) {
       this.refreshCollection();
       return;
     }
-
     const updatedNote = {
       ...updatingNote,
       ...body
     };
-
     this.notes$.next([
       ...filteredNotes,
       updatedNote

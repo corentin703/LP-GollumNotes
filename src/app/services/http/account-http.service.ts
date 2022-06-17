@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import {ConfigService} from '@app/services/config.service';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {LoginResponse, RegisterResponse} from './account-http.service.type';
 import {Payload} from './common.type';
 import {tap} from 'rxjs/operators';
 import {AuthTokenService} from '@/app/services/auth-token.service';
-import {fromPromise} from 'rxjs/internal-compatibility';
 import {HttpBaseService} from '@app/services/http/http-baseService';
 
 @Injectable({
@@ -53,7 +52,7 @@ export class AccountHttpService extends HttpBaseService {
       await this.authTokenService.delete();
     };
 
-    return fromPromise(handle());
+    return from(handle());
   }
 
   protected getEndpoint(apiRootUrl: string): string {
