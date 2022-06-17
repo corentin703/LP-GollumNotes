@@ -11,6 +11,8 @@ export class LoginPage implements OnInit {
   public username: string;
   public password: string;
 
+  public errors: Array<string>;
+
   constructor(
     private accountService: AccountHttpService,
     private router: Router
@@ -22,7 +24,13 @@ export class LoginPage implements OnInit {
 
   public onConnectionClick() {
     this.accountService.login(this.username, this.password)
-      .subscribe(() => this.router.navigateByUrl('/notes'));
+      .subscribe(result => {
+        if (result.errors !== undefined) {
+          this.errors = result.errors;
+          return;
+        }
+        this.router.navigateByUrl('/notes');
+      });
   }
 
   public onSubscriptionClick() {
