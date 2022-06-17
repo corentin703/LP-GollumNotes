@@ -12,15 +12,7 @@ import {map} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class NoteHttpService extends HttpBaseService {
-  private mapEmptyResponses = map<Payload<void>, Payload<void>>(response => {
-    if (response !== undefined && response !== null) {
-      return response;
-    }
 
-    return {
-      messages: []
-    };
-  });
 
   constructor(
     configService: ConfigService,
@@ -42,8 +34,6 @@ export class NoteHttpService extends HttpBaseService {
   }
 
   public create(body: CreateNoteRequest): Observable<Payload<Note>> {
-    console.log(body);
-
     return this.fromEndpoint(endpoint =>
       this.httpClient.post<Payload<Note>>(endpoint, body)
     );
@@ -52,18 +42,28 @@ export class NoteHttpService extends HttpBaseService {
   public update(id: string, body: UpdateNoteRequest): Observable<Payload<void>> {
     return this.fromEndpoint(endpoint =>
       this.httpClient.put<Payload<void>>(`${endpoint}/${id}`, body)
-        .pipe(this.mapEmptyResponses)
+        .pipe(map(response => this.mapEmptyResponse(response)))
     );
   }
 
   public delete(id: string): Observable<Payload<void>> {
     return this.fromEndpoint(endpoint =>
       this.httpClient.delete<Payload<void>>(`${endpoint}/${id}`)
-        .pipe(this.mapEmptyResponses)
+        .pipe(response => this.mapEmptyResponse(response))
     );
   }
 
   protected getEndpoint(apiRootUrl: string): string {
     return `${apiRootUrl}/notes`;
   }
+
+  private mapEmptyResponse = (response => {
+    if (response !== undefined && response !== null) {
+      return response;
+    }
+
+    return {
+      messages: []
+    };
+  });
 }
