@@ -13,14 +13,14 @@ export class ConfigService {
   private config$: BehaviorSubject<Config> = new BehaviorSubject<Config>(ConfigurationFile);
 
   constructor(private http: HttpClient) {
-    this.getConfigNetwork();
+    this.fetchConfig();
   }
 
   public getConfig(): Observable<Config> {
     return this.config$.asObservable();
   }
 
-  private getConfigNetwork(): Observable<Config> {
+  private fetchConfig(): Observable<Config> {
     return this.http.get<Config>(this.configUrl)
       .pipe(
         tap(config => this.config$.next(config))

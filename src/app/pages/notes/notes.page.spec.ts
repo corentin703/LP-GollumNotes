@@ -3,6 +3,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { NotesPage } from './notes.page';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {Storage} from '@ionic/storage';
+import {storageMock} from '@/__mocks__/capacitor/storageMock';
 
 describe('NotesPage', () => {
   let component: NotesPage;
@@ -11,7 +13,10 @@ describe('NotesPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NotesPage ],
-      imports: [IonicModule.forRoot(), HttpClientTestingModule]
+      imports: [IonicModule, HttpClientTestingModule],
+      providers: [
+        {provide: Storage, useValue: storageMock},
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotesPage);
