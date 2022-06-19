@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AccountHttpService } from './account-http.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {RegisterResponse} from './account-http.service.type';
+import {LoginResponse, RegisterResponse} from './account-http.service.type';
 import {faker} from '@faker-js/faker';
 import {ConfigService} from '../config.service';
 import {AuthTokenService} from '@app/services/auth-token.service';
@@ -15,6 +15,10 @@ describe('AccountHttpService', () => {
   let accountService: AccountHttpService;
   let authTokenService: AuthTokenService;
   let httpTestingController: HttpTestingController;
+
+  const id = '4f1d9fc1-b7f5-4022-af41-c83e7cdaa785';
+  const username = faker.internet.userName();
+  const password = faker.internet.password();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,9 +49,6 @@ describe('AccountHttpService', () => {
   it('should register', () => {
     let response: RegisterResponse;
 
-    const username = faker.internet.userName();
-    const password = faker.internet.password();
-
     accountService.register(username, password).subscribe(_response => {
       response = _response.data;
     });
@@ -56,12 +57,44 @@ describe('AccountHttpService', () => {
 
     const responseBody: Payload<RegisterResponse> = {
       data: {
-        id: '4f1d9fc1-b7f5-4022-af41-c83e7cdaa785',
+        id,
         username
       }
     };
     req.flush(responseBody);
 
     expect(response.username).toEqual(username);
+  });
+
+  it('should login', () => {
+    let response: LoginResponse;
+
+    accountService.login(username, password).subscribe(_response => {
+      response = _response.data;
+    });
+
+    const req = httpTestingController.expectOne(`${fakeConfig.webService.url}/auth/login`);
+
+    const token = 'hugzeuyshnkiolezfjeaiuohfhbkjbknjfdbkjfsbhedkjlfzehbiljezfbuilhezfb';
+
+    const responseBody: Payload<LoginResponse> = {
+      data: {
+        id,
+        username,
+        token,
+      }
+    };
+    req.flush(responseBody);
+
+    expect(response.token).toEqual(token);
+  });
+
+  it('should logout', () => {
+    expect(storageMock.get('authToken')).toBeDefined();
+
+    accountService.logout().subscribe(_ => {
+      storageMock.get('authToken')
+        .then(token => expect(token).toBeUndefined());
+    });
   });
 });

@@ -1,11 +1,7 @@
 import {Storage} from '@ionic/storage';
 
-class FakeStorage extends Storage {
+class FakeStorage {
   data: { [key: string]: string } = {};
-
-  constructor() {
-    super({ });
-  }
 
   public create() {
     return Promise.resolve(this);
@@ -22,10 +18,15 @@ class FakeStorage extends Storage {
     return Promise.resolve();
   }
 
+  public remove(key: string): Promise<any> {
+    delete this.data[key];
+    return Promise.resolve();
+  }
+
   public clear() {
     this.data = { };
     return Promise.resolve();
   }
 }
 
-export const storageMock = new FakeStorage();
+export const storageMock = new FakeStorage() as unknown as Storage;

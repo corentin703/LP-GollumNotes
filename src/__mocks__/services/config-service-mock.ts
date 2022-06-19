@@ -8,11 +8,14 @@ export const fakeConfig: Config = {
   }
 };
 
-class ConfigServiceMock {
+class ConfigServiceMock extends ConfigService {
+  constructor() {
+    super(null);
+  }
 
   getConfig(): Observable<Config> {
     return of(fakeConfig);
   }
 }
 
-export const configServiceMock: ConfigService = new ConfigServiceMock() as unknown as ConfigService;
+export const configServiceMock: ConfigService = new ConfigServiceMock();
