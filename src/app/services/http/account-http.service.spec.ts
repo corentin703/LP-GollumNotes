@@ -10,33 +10,34 @@ import {of} from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import {HttpClient} from '@angular/common/http';
+import {AuthTokenService} from '@app/services/auth-token.service';
+import {StorageService} from '@app/services/storage.service';
+import { storageMock } from '@/__mocks__/@capacitor/storageMock';
 
-describe('AccountService', () => {
+describe('AccountHttpService', () => {
   let accountService: AccountHttpService;
+  let authTokenService: AuthTokenService;
+  let storageService: StorageService;
   let configService: ConfigService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
-    // configServiceSpy = createSpyObj('ConfigService', ['getConfig']);
-    // configServiceSpy.getConfig.and.returnValue(
-    //   of<Config>(
-    //     {
-    //       webService: {
-    //         url: 'https://gollum-notes.app'
-    //       }
-    //     }
-    //   )
-    // );
 
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],
       providers: [
+        {provide: HttpClient, useValue: httpTestingController},
         {provide: ConfigService, useValue: configService},
         AccountHttpService,
       ]
     }).compileComponents();
+
     httpTestingController = TestBed.inject(HttpTestingController);
     configService = TestBed.inject(ConfigService);
+
+    storageService = new StorageService(storageMock);
+    authTokenService = new AuthTokenService(storageService);
+
     spyOn(configService, 'getConfig').and.returnValue(of(
       {
         webService: {
@@ -45,9 +46,12 @@ describe('AccountService', () => {
       }
     ));
 
+    spyOn(authTokenService, 'save').and.returnValue((async () => { })());
+
     accountService = new AccountHttpService(
       configService,
-      TestBed.inject(HttpClient)
+      TestBed.inject(HttpClient),
+      authTokenService
     );
   });
 
@@ -59,13 +63,13 @@ describe('AccountService', () => {
     httpTestingController.verify();
   });
 
-  it ('should register', () => {
+  it('should register', () => {
     let response: RegisterResponse;
 
     const username = faker.internet.userName();
     const password = faker.internet.password();
 
-    accountService.register(username, password).subscribe(_response => response = _response);
+    accountService.register(username, password).subscribe(_response => response = _response.data);
 
     const req = httpTestingController.expectOne('https://gollum-notes.app/auth/register');
 

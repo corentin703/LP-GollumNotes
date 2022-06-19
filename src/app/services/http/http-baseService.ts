@@ -10,7 +10,7 @@ export abstract class HttpBaseService {
   ) { }
 
   protected fromConfig<T>(callback: (config: Config, index: number) => Observable<T>): Observable<T> {
-    return this.configService$.config.pipe(
+    return this.configService$.getConfig().pipe(
       mergeMap(callback)
     );
   }

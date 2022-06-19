@@ -30,7 +30,7 @@ describe('ConfigService', () => {
   it ('shoud get config', () => {
     let config: Config;
 
-    configService.config.subscribe(_config => config = _config);
+    configService.getConfig().subscribe(_config => config = _config);
 
     const req = httpTestingController.expectOne('assets/config.json');
 

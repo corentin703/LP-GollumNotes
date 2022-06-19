@@ -16,7 +16,7 @@ export class ConfigService {
     this.getConfigNetwork();
   }
 
-  public get config(): Observable<Config> {
+  public getConfig(): Observable<Config> {
     return this.config$.asObservable();
   }
 
