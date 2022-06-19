@@ -16,7 +16,7 @@ describe('AccountHttpService', () => {
   let authTokenService: AuthTokenService;
   let httpTestingController: HttpTestingController;
 
-  const id = '4f1d9fc1-b7f5-4022-af41-c83e7cdaa785';
+  const id = faker.datatype.uuid();
   const username = faker.internet.userName();
   const password = faker.internet.password();
 
@@ -74,7 +74,6 @@ describe('AccountHttpService', () => {
     });
 
     const req = httpTestingController.expectOne(`${fakeConfig.webService.url}/auth/login`);
-
     const token = 'hugzeuyshnkiolezfjeaiuohfhbkjbknjfdbkjfsbhedkjlfzehbiljezfbuilhezfb';
 
     const responseBody: Payload<LoginResponse> = {
