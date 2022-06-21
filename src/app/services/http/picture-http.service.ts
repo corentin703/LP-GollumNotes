@@ -35,8 +35,8 @@ export class PictureHttpService extends HttpBaseService {
   }
 
   public getContentById(noteId: string, pictureId: string): Observable<Blob> {
-    return this.fromEndpoint(endpoint =>
-      this.download.download(`${endpoint}/${pictureId}`),
+    return this.fromEndpoint(
+      endpoint => this.download.download(`${endpoint}/${pictureId}`),
       noteId
     );
   }
@@ -45,15 +45,15 @@ export class PictureHttpService extends HttpBaseService {
     const formData = new FormData();
     formData.append('file', pictureBlob);
 
-    return this.fromEndpoint(endpoint =>
-      this.httpClient.post<Payload<PictureResponse>>(endpoint, formData),
+    return this.fromEndpoint(
+      endpoint => this.httpClient.post<Payload<PictureResponse>>(endpoint, formData),
       noteId
     );
   }
 
-  public delete(noteId: string, pictureId: string): Observable<void> {
-    return this.fromEndpoint(endpoint =>
-        this.httpClient.delete<void>(`${endpoint}/${pictureId}`),
+  public delete(noteId: string, pictureId: string): Observable<Payload<undefined> | null> {
+    return this.fromEndpoint(
+      endpoint => this.httpClient.delete<Payload<undefined> | null>(`${endpoint}/${pictureId}`),
       noteId
     );
   }

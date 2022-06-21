@@ -39,31 +39,19 @@ export class NoteHttpService extends HttpBaseService {
     );
   }
 
-  public update(id: string, body: UpdateNoteRequest): Observable<Payload<void>> {
+  public update(id: string, body: UpdateNoteRequest): Observable<Payload<undefined> | null> {
     return this.fromEndpoint(endpoint =>
-      this.httpClient.put<Payload<void>>(`${endpoint}/${id}`, body)
-        .pipe(map(response => this.mapEmptyResponse(response)))
+      this.httpClient.put<Payload<undefined> | null>(`${endpoint}/${id}`, body)
     );
   }
 
-  public delete(id: string): Observable<Payload<void>> {
+  public delete(id: string): Observable<Payload<undefined> | null> {
     return this.fromEndpoint(endpoint =>
-      this.httpClient.delete<Payload<void>>(`${endpoint}/${id}`)
-        .pipe(response => this.mapEmptyResponse(response))
+      this.httpClient.delete<Payload<undefined> | null>(`${endpoint}/${id}`)
     );
   }
 
   protected getEndpoint(apiRootUrl: string): string {
     return `${apiRootUrl}/notes`;
   }
-
-  private mapEmptyResponse = (response => {
-    if (response !== undefined && response !== null) {
-      return response;
-    }
-
-    return {
-      messages: []
-    };
-  });
 }

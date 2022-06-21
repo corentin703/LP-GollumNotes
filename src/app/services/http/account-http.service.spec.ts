@@ -2,78 +2,98 @@ import { TestBed } from '@angular/core/testing';
 
 import { AccountHttpService } from './account-http.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {Config} from '../config.service.type';
-import {RegisterResponse} from './account-http.service.type';
+import {LoginResponse, RegisterResponse} from './account-http.service.type';
 import {faker} from '@faker-js/faker';
 import {ConfigService} from '../config.service';
-import {of} from 'rxjs';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
-import {HttpClient} from '@angular/common/http';
+import {AuthTokenService} from '@app/services/auth-token.service';
+import { storageMock } from '@/__mocks__/capacitor/storageMock';
+import {Storage} from '@ionic/storage';
+import {configServiceMock, fakeConfig} from '@/__mocks__/services/config-service-mock';
+import {Payload} from '@app/services/http/common.type';
 
-describe('AccountService', () => {
+describe('AccountHttpService', () => {
   let accountService: AccountHttpService;
-  let configService: ConfigService;
+  let authTokenService: AuthTokenService;
   let httpTestingController: HttpTestingController;
 
-  beforeEach(() => {
-    // configServiceSpy = createSpyObj('ConfigService', ['getConfig']);
-    // configServiceSpy.getConfig.and.returnValue(
-    //   of<Config>(
-    //     {
-    //       webService: {
-    //         url: 'https://gollum-notes.app'
-    //       }
-    //     }
-    //   )
-    // );
+  const id = faker.datatype.uuid();
+  const username = faker.internet.userName();
+  const password = faker.internet.password();
 
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],
       providers: [
-        {provide: ConfigService, useValue: configService},
+        {provide: Storage, useValue: storageMock},
+        {provide: ConfigService, useValue: configServiceMock},
         AccountHttpService,
       ]
     }).compileComponents();
+
     httpTestingController = TestBed.inject(HttpTestingController);
-    configService = TestBed.inject(ConfigService);
-    spyOn(configService, 'getConfig').and.returnValue(of(
-      {
-        webService: {
-          url: 'https://gollum-notes.app'
-        }
-      }
-    ));
 
-    accountService = new AccountHttpService(
-      configService,
-      TestBed.inject(HttpClient)
-    );
-  });
+    authTokenService = TestBed.inject(AuthTokenService);
+    spyOn(authTokenService, 'save').and.returnValue((async () => { })());
 
-  it('should be created', () => {
-    expect(accountService).toBeTruthy();
+    accountService = TestBed.inject(AccountHttpService);
   });
 
   afterEach(() => {
     httpTestingController.verify();
   });
 
-  it ('should register', () => {
+  it('should be created', () => {
+    expect(accountService).toBeTruthy();
+  });
+
+  it('should register', () => {
     let response: RegisterResponse;
 
-    const username = faker.internet.userName();
-    const password = faker.internet.password();
-
-    accountService.register(username, password).subscribe(_response => response = _response);
-
-    const req = httpTestingController.expectOne('https://gollum-notes.app/auth/register');
-
-    req.flush({
-      id: '4f1d9fc1-b7f5-4022-af41-c83e7cdaa785',
-      username
+    accountService.register(username, password).subscribe(_response => {
+      response = _response.data;
     });
 
+    const req = httpTestingController.expectOne(`${fakeConfig.webService.url}/auth/register`);
+
+    const responseBody: Payload<RegisterResponse> = {
+      data: {
+        id,
+        username
+      }
+    };
+    req.flush(responseBody);
+
     expect(response.username).toEqual(username);
+  });
+
+  it('should login', () => {
+    let response: LoginResponse;
+
+    accountService.login(username, password).subscribe(_response => {
+      response = _response.data;
+    });
+
+    const req = httpTestingController.expectOne(`${fakeConfig.webService.url}/auth/login`);
+    const token = 'hugzeuyshnkiolezfjeaiuohfhbkjbknjfdbkjfsbhedkjlfzehbiljezfbuilhezfb';
+
+    const responseBody: Payload<LoginResponse> = {
+      data: {
+        id,
+        username,
+        token,
+      }
+    };
+    req.flush(responseBody);
+
+    expect(response.token).toEqual(token);
+  });
+
+  it('should logout', () => {
+    expect(storageMock.get('authToken')).toBeDefined();
+
+    accountService.logout().subscribe(_ => {
+      storageMock.get('authToken')
+        .then(token => expect(token).toBeUndefined());
+    });
   });
 });

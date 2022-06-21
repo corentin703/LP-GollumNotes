@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Optional} from '@angular/core';
 import {NoteHttpService} from '@app/services/http/note-http.service';
 import {AccountHttpService} from '@app/services/http/account-http.service';
 import {Photo} from '@capacitor/camera';
@@ -16,7 +16,7 @@ export class NotesPage implements OnInit {
 
   constructor(
     private noteStore: NoteStoreService,
-    public routerOutlet: IonRouterOutlet,
+    @Optional() public routerOutlet: IonRouterOutlet,
   ) { }
 
   public ngOnInit() {

@@ -23,7 +23,6 @@ export class NoteComponent implements OnInit {
   constructor(
     private readonly noteStoreService: NoteStoreService,
     private readonly photoService: PhotoService,
-    private camera: Camera
   ) { }
 
   public get id(): string {
