@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ConfigService} from '@app/services/config.service';
 import {HttpClient} from '@angular/common/http';
-import {from, Observable} from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import {LoginResponse, RegisterResponse} from './account-http.service.type';
 import {Payload} from './common.type';
 import {tap} from 'rxjs/operators';
@@ -22,7 +22,7 @@ export class AccountHttpService extends HttpBaseService {
   }
 
   public register(username: string, password: string): Observable<Payload<RegisterResponse>> {
-    return this.fromEndpoint(endpoint =>
+    return this.fromPayloadEndpoint(endpoint =>
       this.httpClient.post<Payload<RegisterResponse>>(
         `${endpoint}/register`,
         {
@@ -34,7 +34,7 @@ export class AccountHttpService extends HttpBaseService {
   }
 
   public login(username: string, password: string): Observable<Payload<LoginResponse>> {
-    return this.fromEndpoint(endpoint =>
+    return this.fromPayloadEndpoint(endpoint =>
       this.httpClient.post<Payload<LoginResponse>>(
         `${endpoint}/login`,
         {
@@ -43,7 +43,11 @@ export class AccountHttpService extends HttpBaseService {
         }
       )
     ).pipe(
-      tap(async response => await this.authTokenService.save(response.data.token)),
+      tap(async response => {
+        if (response.errorStatus === undefined) {
+          await this.authTokenService.save(response.data.token);
+        }
+      }),
     );
   }
 

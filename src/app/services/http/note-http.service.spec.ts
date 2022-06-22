@@ -7,19 +7,13 @@ import {faker} from '@faker-js/faker';
 import {configServiceMock, fakeConfig} from '@/__mocks__/services/config-service-mock';
 import {Payload} from '@app/services/http/common.type';
 import {ConfigService} from '@app/services/config.service';
-import {catchError} from 'rxjs';
-import {HttpErrorResponse} from '@angular/common/http';
+import {makeNote} from '@/__fixtures__/NoteFixture';
 
 describe('NoteHttpService', () => {
   let httpTestingController: HttpTestingController;
   let noteHttpService: NoteHttpService;
 
-  const note: Note = {
-    id: faker.datatype.uuid(),
-    title: faker.word.noun(),
-    content: faker.lorem.text(),
-    createdAt: new Date(),
-  };
+  const note = makeNote();
 
   const updatedNoteContent = faker.lorem.text();
 
@@ -37,6 +31,20 @@ describe('NoteHttpService', () => {
 
   it('should be created', () => {
     expect(noteHttpService).toBeTruthy();
+  });
+
+  it('should get all', () => {
+    let response: Payload<Note[]>;
+    noteHttpService.getAll().subscribe(notes => response = notes);
+    httpTestingController.expectOne(`${fakeConfig.webService.url}/notes`);
+
+  });
+
+  it('should get all', () => {
+    let gotNotes: Note[];
+    noteStoreService.getAll().subscribe(notes => gotNotes = notes);
+    httpTestingController.expectOne(`${fakeConfig.webService.url}/notes`);
+
   });
 
   it('should request note creation', () => {
@@ -86,36 +94,32 @@ describe('NoteHttpService', () => {
     expect(responseBody).toBeNull();
   });
 
-  // it('should request note update with error', () => {
-  //   const requestBody: UpdateNoteRequest = {
-  //     content: updatedNoteContent,
-  //   };
-  //
-  //   let responseBody: Payload<undefined>;
-  //   const errorResponseBody: Payload<undefined> = {
-  //     errors: [
-  //       faker.lorem.lines(1),
-  //     ],
-  //   };
-  //
-  //   noteHttpService.update(note.id, requestBody)
-  //     .pipe(catchError(error => {
-  //       if (error instanceof HttpErrorResponse) {
-  //         error.
-  //       }
-  //     }))
-  //
-  //   const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes/${note.id}`);
-  //   request.flush(null, {
-  //     status: 400,
-  //     statusText: 'BAD-REQUEST'
-  //   });
-  //
-  //   expect(responseBody).toBeDefined();
-  //   expect(responseBody.errors).toBeDefined();
-  //   expect(responseBody.errors.length).toEqual(1);
-  //   expect(responseBody.errors[0]).toEqual(errorResponseBody.errors[0]);
-  // });
+  it('should request note update with error', () => {
+    const requestBody: UpdateNoteRequest = {
+      content: updatedNoteContent,
+    };
+
+    let responseBody: Payload<undefined>;
+    const errorResponseBody: Payload<undefined> = {
+      errors: [
+        faker.lorem.lines(1),
+      ],
+    };
+
+    noteHttpService.update(note.id, requestBody)
+      .subscribe(response => responseBody = response);
+
+    const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes/${note.id}`);
+    request.flush(errorResponseBody, {
+      status: 400,
+      statusText: 'BAD-REQUEST'
+    });
+
+    expect(responseBody).toBeDefined();
+    expect(responseBody.errors).toBeDefined();
+    expect(responseBody.errors.length).toEqual(errorResponseBody.errors.length);
+    expect(responseBody.errors[0]).toEqual(errorResponseBody.errors[0]);
+  });
 
   it('should request note deletion', () => {
     let responseBody: any;

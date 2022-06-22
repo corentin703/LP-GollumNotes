@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed, tick} from '@angular/core/testing';
 
 import { ConfigService } from './config.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
@@ -35,8 +35,10 @@ describe('ConfigService', () => {
   //     config = _config;
   //   });
   //
-  //   const req = httpTestingController.expectOne('assets/config.json');
+  //   const req = httpTestingController.expectOne(window.origin + '/assets/config.json');
   //   req.flush(fakeConfig);
+  //
+  //   tick(500);
   //
   //   expect(config.webService.url).toEqual('https://gollum-notes.app/api');
   // });
