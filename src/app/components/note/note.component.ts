@@ -20,6 +20,8 @@ export class NoteComponent implements OnInit {
 
   public errors: Array<string>;
 
+  public pophoverId: string;
+
   constructor(
     private readonly noteStoreService: NoteStoreService,
     private readonly photoService: PhotoService,
@@ -50,6 +52,7 @@ export class NoteComponent implements OnInit {
   }
 
   public ngOnInit() {
+    this.pophoverId = `KimK-${this.note.id}`;
     this.noteForm = new FormGroup({
       title: new FormControl(this.note.title, [
         Validators.required,
@@ -140,4 +143,9 @@ export class NoteComponent implements OnInit {
   //     // Handle error
   //   });
   // }
+  test() {
+    console.log('Test :');
+    console.log('note titile : ' + this.note.title);
+    console.log('note content : ' + this.note.content);
+  }
 }
