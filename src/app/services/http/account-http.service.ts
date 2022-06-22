@@ -43,7 +43,11 @@ export class AccountHttpService extends HttpBaseService {
         }
       )
     ).pipe(
-      tap(async response => await this.authTokenService.save(response.data.token)),
+      tap(async response => {
+        if (response.errorStatus === undefined) {
+          await this.authTokenService.save(response.data.token);
+        }
+      }),
     );
   }
 

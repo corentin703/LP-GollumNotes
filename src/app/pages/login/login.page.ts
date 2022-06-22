@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AccountHttpService} from '@app/services/http/account-http.service';
 import {Router} from '@angular/router';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -8,10 +9,11 @@ import {Router} from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  public username: string;
-  public password: string;
-
+  public loginForm: FormGroup;
   public errors: Array<string>;
+
+  private username$: string;
+  private password$: string;
 
   constructor(
     private accountService: AccountHttpService,
@@ -19,11 +21,22 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    //
+    this.loginForm = new FormGroup({
+      username: new FormControl(this.username$, [
+        Validators.required,
+        Validators.minLength(1)
+      ]),
+      password: new FormControl(this.password$, [
+        Validators.required,
+        Validators.minLength(1)
+      ]),
+    });
   }
 
-  public onConnectionClick() {
-    this.accountService.login(this.username, this.password)
+  public onLogin() {
+    const { username, password } = this.loginForm.value;
+
+    this.accountService.login(username, password)
       .subscribe(result => {
         if (result.errors !== undefined) {
           this.errors = result.errors;
