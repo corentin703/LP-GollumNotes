@@ -6,6 +6,12 @@
   <ion-card-content>
     <p class="ion-margin-bottom">{{ content }}</p>
 
+    <ion-grid>
+      <ion-row *ngFor="let image of note.pictures; index as position">
+        <ion-img [src]=" image.webPath"></ion-img>
+      </ion-row>
+    </ion-grid>
+
     <div *ngFor="let error of errors">
       <ion-item >
         <ion-label>Error: {{error}}</ion-label>

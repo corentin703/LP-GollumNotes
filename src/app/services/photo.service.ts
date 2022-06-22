@@ -11,6 +11,10 @@ export class PhotoService {
   public async takePhoto(): Promise<Photo> {
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({
+      // resultType: CameraResultType.Uri,
+      // source: CameraSource.Camera,
+      // quality: 100,
+      // saveToGallery: false,
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
       quality: 100,

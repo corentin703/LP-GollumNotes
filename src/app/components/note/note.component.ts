@@ -105,10 +105,13 @@ export class NoteComponent implements OnInit {
 
   public addPicture() {
     //
+    console.log('note title : ' + this.note.title );
+    console.log('note content : ' + this.note.content );
   }
 
   public takePicture() {
 
+    console.log('LA NOTE ' + this.note.title);
     const newPhoto = this.photoService.takePhoto();
 
     newPhoto.then(
@@ -122,7 +125,7 @@ export class NoteComponent implements OnInit {
         + '\nexif '+ value.exif
         + '\nsaved '+ value.saved
         );
-        this.note.pictures.push(newPhoto);
+        this.note.pictures.push(value);
       }
     );
 
