@@ -19,6 +19,8 @@ export class NoteComponent implements OnInit {
 
   private pictures: Photo[];
 
+  public pophoverId: string;
+
   constructor(
     private readonly noteStoreService: NoteStoreService,
     private readonly photoService: PhotoService,
@@ -49,6 +51,7 @@ export class NoteComponent implements OnInit {
   }
 
   public ngOnInit() {
+    this.pophoverId = `KimK-${this.note.id}`;
     this.noteForm = new FormGroup({
       title: new FormControl(this.note.title, [
         Validators.required,
@@ -98,11 +101,12 @@ export class NoteComponent implements OnInit {
   }
 
   public addPicture() {
-    //
+    console.log('note title : ' + this.note.title );
+    console.log('note content : ' + this.note.content );
   }
 
   public takePicture() {
-
+    console.log('LA NOTE ' + this.note.title);
     const newPhoto = this.photoService.takePhoto();
 
     newPhoto.then(
@@ -117,7 +121,6 @@ export class NoteComponent implements OnInit {
         + '\nsaved '+ value.saved
         );
         this.pictures.push(value);
-        // this.note.pictures.push(newPhoto);
       }
     );
 
@@ -137,4 +140,9 @@ export class NoteComponent implements OnInit {
   //     // Handle error
   //   });
   // }
+  test() {
+    console.log('Test :');
+    console.log('note titile : ' + this.note.title);
+    console.log('note content : ' + this.note.content);
+  }
 }
