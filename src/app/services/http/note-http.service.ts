@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from '@app/services/config.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {CreateNoteRequest, UpdateNoteRequest} from './note-http.service.type';
-import {Observable} from 'rxjs';
+import {catchError, Observable, of} from 'rxjs';
 import {Payload} from './common.type';
 import {HttpBaseService} from '@app/services/http/http-baseService';
 import {Note} from '@/app/entities/Note';
-import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,31 +21,42 @@ export class NoteHttpService extends HttpBaseService {
   }
 
   public getAll(): Observable<Payload<Note[]>> {
-    return this.fromEndpoint(endpoint =>
+    return this.fromPayloadEndpoint(endpoint =>
       this.httpClient.get<Payload<Note[]>>(endpoint)
     );
   }
 
   public getById(id): Observable<Payload<Note[]>> {
-    return this.fromEndpoint(endpoint =>
+    return this.fromPayloadEndpoint(endpoint =>
       this.httpClient.get<Payload<Note[]>>(`${endpoint}/${id}`)
     );
   }
 
   public create(body: CreateNoteRequest): Observable<Payload<Note>> {
-    return this.fromEndpoint(endpoint =>
+    return this.fromPayloadEndpoint(endpoint =>
       this.httpClient.post<Payload<Note>>(endpoint, body)
     );
   }
 
   public update(id: string, body: UpdateNoteRequest): Observable<Payload<undefined> | null> {
-    return this.fromEndpoint(endpoint =>
+    return this.fromPayloadEndpoint(endpoint =>
       this.httpClient.put<Payload<undefined> | null>(`${endpoint}/${id}`, body)
+        // .pipe(catchError((err, caught) => {
+        //
+        //   console.log(err.error)
+        //   if (err instanceof HttpErrorResponse)
+        //   {
+        //     const errorPayload: Payload<undefined> = JSON.parse(err.error);
+        //     return of(errorPayload);
+        //   } else {
+        //     throw err;
+        //   }
+        // }))
     );
   }
 
   public delete(id: string): Observable<Payload<undefined> | null> {
-    return this.fromEndpoint(endpoint =>
+    return this.fromPayloadEndpoint(endpoint =>
       this.httpClient.delete<Payload<undefined> | null>(`${endpoint}/${id}`)
     );
   }

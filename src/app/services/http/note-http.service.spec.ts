@@ -86,36 +86,32 @@ describe('NoteHttpService', () => {
     expect(responseBody).toBeNull();
   });
 
-  // it('should request note update with error', () => {
-  //   const requestBody: UpdateNoteRequest = {
-  //     content: updatedNoteContent,
-  //   };
-  //
-  //   let responseBody: Payload<undefined>;
-  //   const errorResponseBody: Payload<undefined> = {
-  //     errors: [
-  //       faker.lorem.lines(1),
-  //     ],
-  //   };
-  //
-  //   noteHttpService.update(note.id, requestBody)
-  //     .pipe(catchError(error => {
-  //       if (error instanceof HttpErrorResponse) {
-  //         error.
-  //       }
-  //     }))
-  //
-  //   const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes/${note.id}`);
-  //   request.flush(null, {
-  //     status: 400,
-  //     statusText: 'BAD-REQUEST'
-  //   });
-  //
-  //   expect(responseBody).toBeDefined();
-  //   expect(responseBody.errors).toBeDefined();
-  //   expect(responseBody.errors.length).toEqual(1);
-  //   expect(responseBody.errors[0]).toEqual(errorResponseBody.errors[0]);
-  // });
+  it('should request note update with error', () => {
+    const requestBody: UpdateNoteRequest = {
+      content: updatedNoteContent,
+    };
+
+    let responseBody: Payload<undefined>;
+    const errorResponseBody: Payload<undefined> = {
+      errors: [
+        faker.lorem.lines(1),
+      ],
+    };
+
+    noteHttpService.update(note.id, requestBody)
+      .subscribe(response => responseBody = response);
+
+    const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes/${note.id}`);
+    request.flush(errorResponseBody, {
+      status: 400,
+      statusText: 'BAD-REQUEST'
+    });
+
+    expect(responseBody).toBeDefined();
+    expect(responseBody.errors).toBeDefined();
+    expect(responseBody.errors.length).toEqual(errorResponseBody.errors.length);
+    expect(responseBody.errors[0]).toEqual(errorResponseBody.errors[0]);
+  });
 
   it('should request note deletion', () => {
     let responseBody: any;
