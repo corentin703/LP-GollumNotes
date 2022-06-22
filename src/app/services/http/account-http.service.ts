@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ConfigService} from '@app/services/config.service';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError, from, Observable, of} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {from, Observable, of} from 'rxjs';
 import {LoginResponse, RegisterResponse} from './account-http.service.type';
 import {Payload} from './common.type';
 import {tap} from 'rxjs/operators';

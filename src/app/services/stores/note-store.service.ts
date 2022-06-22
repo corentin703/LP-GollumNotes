@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, firstValueFrom, from, lastValueFrom, Observable} from 'rxjs';
+import {BehaviorSubject, from, Observable} from 'rxjs';
 import {Note} from '@app/entities/Note';
 import {NoteHttpService} from '@app/services/http/note-http.service';
-import {map, tap} from 'rxjs/operators';
+import {first, map, tap} from 'rxjs/operators';
 import {CreateNoteRequest, UpdateNoteRequest} from '@app/services/http/note-http.service.type';
 import {IEntityStoreService} from '@app/contracts/services/stores/entity-store-service';
 import {Payload} from '@app/services/http/common.type';
@@ -13,13 +13,17 @@ import {Payload} from '@app/services/http/common.type';
 export class NoteStoreService implements IEntityStoreService<Note, CreateNoteRequest, UpdateNoteRequest> {
   private readonly notes$ = new BehaviorSubject<Note[]>(undefined);
 
+  private isInitialized = false;
+
   constructor(
     private noteHttpService: NoteHttpService
-  ) {
-    this.refreshCollection();
-  }
+  ) { }
 
   public getAll(): Observable<Note[]> {
+    if (!this.isInitialized) {
+      this.refreshCollection();
+    }
+
     return this.notes$.asObservable();
   }
 
@@ -68,9 +72,9 @@ export class NoteStoreService implements IEntityStoreService<Note, CreateNoteReq
   }
 
   private async handleUpdate(id: string, body: UpdateNoteRequest): Promise<Payload<Note>> {
-    const response = await firstValueFrom(this.noteHttpService.update(id, body));
+    const response = await this.noteHttpService.update(id, body).pipe(first()).toPromise();
 
-    if (response.errors !== undefined) {
+    if (response !== null && response.errors !== undefined) {
       return {
         ...response,
         data: null,
@@ -78,7 +82,7 @@ export class NoteStoreService implements IEntityStoreService<Note, CreateNoteReq
     }
 
     const filteredNotes = this.notes$.value.filter(note => note.id !== id);
-    const updatingNote = await firstValueFrom(this.getById(id));
+    const updatingNote = await this.getById(id).pipe(first()).toPromise();
 
     if (updatingNote === null) {
       this.refreshCollection();
@@ -103,6 +107,7 @@ export class NoteStoreService implements IEntityStoreService<Note, CreateNoteReq
     this.noteHttpService.getAll().subscribe(notes => {
       if (notes.data !== undefined) {
         this.notes$.next(notes.data);
+        this.isInitialized = true;
       }
     });
   }

@@ -7,19 +7,13 @@ import {faker} from '@faker-js/faker';
 import {configServiceMock, fakeConfig} from '@/__mocks__/services/config-service-mock';
 import {Payload} from '@app/services/http/common.type';
 import {ConfigService} from '@app/services/config.service';
-import {catchError} from 'rxjs';
-import {HttpErrorResponse} from '@angular/common/http';
+import {makeNote} from '@/__fixtures__/NoteFixture';
 
 describe('NoteHttpService', () => {
   let httpTestingController: HttpTestingController;
   let noteHttpService: NoteHttpService;
 
-  const note: Note = {
-    id: faker.datatype.uuid(),
-    title: faker.word.noun(),
-    content: faker.lorem.text(),
-    createdAt: new Date(),
-  };
+  const note = makeNote();
 
   const updatedNoteContent = faker.lorem.text();
 
@@ -37,6 +31,20 @@ describe('NoteHttpService', () => {
 
   it('should be created', () => {
     expect(noteHttpService).toBeTruthy();
+  });
+
+  it('should get all', () => {
+    let response: Payload<Note[]>;
+    noteHttpService.getAll().subscribe(notes => response = notes);
+    httpTestingController.expectOne(`${fakeConfig.webService.url}/notes`);
+
+  });
+
+  it('should get all', () => {
+    let gotNotes: Note[];
+    noteStoreService.getAll().subscribe(notes => gotNotes = notes);
+    httpTestingController.expectOne(`${fakeConfig.webService.url}/notes`);
+
   });
 
   it('should request note creation', () => {

@@ -22,7 +22,6 @@ export class NotesPage implements OnInit {
   public ngOnInit() {
     this.noteStore.getAll().subscribe(
       notes => {
-        console.log('retour getAllNote', notes);
         this.notes = notes;
       });
   }

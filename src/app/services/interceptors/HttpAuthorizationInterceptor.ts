@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable, from, lastValueFrom} from 'rxjs';
+import {Observable, from} from 'rxjs';
 import {AuthTokenService} from '@app/services/auth-token.service';
+import {first} from 'rxjs/operators';
 
 
 @Injectable()
@@ -14,16 +15,16 @@ export class HttpAuthorizationInterceptor implements HttpInterceptor {
   }
 
   async handle(req: HttpRequest<any>, next: HttpHandler): Promise<HttpEvent<any>>  {
-    const userToken = await lastValueFrom(this.authTokenService.get());
+    const userToken = await this.authTokenService.get().toPromise();
 
     if (userToken == null) {
-      return await lastValueFrom(next.handle(req));
+      return await next.handle(req).toPromise();
     }
 
     const authorizedRequest = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${userToken}`),
     });
 
-    return await lastValueFrom(next.handle(authorizedRequest));
+    return await next.handle(authorizedRequest).toPromise();
   }
 }

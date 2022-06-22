@@ -60,19 +60,16 @@ export class NoteComponent implements OnInit {
         Validators.minLength(1)
       ]),
     });
-
-    console.log(this.note.id);
   }
 
   public delete() {
     this.noteStoreService.delete(
       this.id
     ).subscribe(result => {
-      if (result.errors !== undefined){
+      if (result !== null && result.errors !== undefined){
         this.errors = result.errors;
         return;
       }
-      console.log('Note supprimée', result);
     });
   }
 
@@ -85,12 +82,10 @@ export class NoteComponent implements OnInit {
       this.id,
       this.noteForm.value
     ).subscribe(result => {
-      console.log('Start commit');
       if (result.errors !== undefined){
         this.errors = result.errors;
         return;
       }
-      console.log('Note mise à jour', result);
       this.note.title = this.titleControl.value;
       this.note.content = this.contentControl.value;
       this.isEditing = false;

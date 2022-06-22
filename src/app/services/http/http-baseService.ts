@@ -1,7 +1,7 @@
 import {ConfigService} from '@app/services/config.service';
-import {catchError, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Config} from '@app/services/config.service.type';
-import {mergeMap} from 'rxjs/operators';
+import {catchError, mergeMap} from 'rxjs/operators';
 import {Payload} from '@app/services/http/common.type';
 import {HttpErrorResponse} from '@angular/common/http';
 
@@ -32,7 +32,8 @@ export abstract class HttpBaseService {
     );
   }
 
-  protected fromEndpoint<T>(callback: (endpoint: string, index: number) => Observable<T>, ...endpointArgs: string[]): Observable<T> | Observable<Payload<undefined>> {
+  protected fromEndpoint<T>(callback: (endpoint: string, index: number) => Observable<T>, ...endpointArgs: string[]):
+    Observable<T> | Observable<Payload<undefined>> {
     return this.fromConfig(
       (config, index) => callback(
         this.getEndpoint(config.webService.url, ...endpointArgs),
@@ -41,7 +42,9 @@ export abstract class HttpBaseService {
     ).pipe(this.catchErrors());
   }
 
-  protected fromPayloadEndpoint<T>(callback: (endpoint: string, index: number) => Observable<Payload<T>>, ...endpointArgs: string[]): Observable<Payload<T>> {
+  protected fromPayloadEndpoint<T>(
+    callback: (endpoint: string, index: number) => Observable<Payload<T>>, ...endpointArgs: string[]
+  ): Observable<Payload<T>> {
     return this.fromConfig(
       (config, index) => callback(
         this.getEndpoint(config.webService.url, ...endpointArgs),
