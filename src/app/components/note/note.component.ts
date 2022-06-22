@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {PhotoService} from '@app/services/photo.service';
-import {Camera} from '@ionic-native/camera/ngx';
 import {Note} from '@app/entities/Note';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NoteStoreService} from '@app/services/stores/note-store.service';
@@ -16,31 +15,14 @@ export class NoteComponent implements OnInit {
   public noteForm: FormGroup;
   public isEditing = false;
   public errors: Array<string>;
+  public popoverId: string;
 
-  private pictures: Photo[];
-
-  public pophoverId: string;
+  public pictures: Photo[] = [];
 
   constructor(
     private readonly noteStoreService: NoteStoreService,
     private readonly photoService: PhotoService,
   ) { }
-
-  public get id(): string {
-    return this.note.id;
-  }
-
-  public get title(): string {
-    return this.note.title;
-  }
-
-  public get content(): string {
-    return this.note.content;
-  }
-
-  public get createdAt(): Date {
-    return this.note.createdAt;
-  }
 
   public get titleControl(): AbstractControl {
     return this.noteForm?.get('title');
@@ -51,7 +33,7 @@ export class NoteComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.pophoverId = `KimK-${this.note.id}`;
+    this.popoverId = `photo-add-btn-${this.note.id}`;
     this.noteForm = new FormGroup({
       title: new FormControl(this.note.title, [
         Validators.required,
@@ -66,7 +48,7 @@ export class NoteComponent implements OnInit {
 
   public delete() {
     this.noteStoreService.delete(
-      this.id
+      this.note.id
     ).subscribe(result => {
       if (result !== null && result.errors !== undefined){
         this.errors = result.errors;
@@ -81,7 +63,7 @@ export class NoteComponent implements OnInit {
 
   public commitUpdate() {
     this.noteStoreService.update(
-      this.id,
+      this.note.id,
       this.noteForm.value
     ).subscribe(result => {
       if (result.errors !== undefined){
@@ -95,8 +77,8 @@ export class NoteComponent implements OnInit {
   }
 
   public cancelUpdate() {
-    this.titleControl.setValue(this.title);
-    this.contentControl.setValue(this.content);
+    this.titleControl.setValue(this.note.title);
+    this.contentControl.setValue(this.note.content);
     this.isEditing = false;
   }
 

@@ -1,6 +1,6 @@
 <ion-card *ngIf="!isEditing else editing">
   <ion-card-header>
-    <ion-card-subtitle>Créée le {{ createdAt  | date }}</ion-card-subtitle>
+    <ion-card-subtitle>Créée le {{ note.createdAt  | date }}</ion-card-subtitle>
     <ion-card-title>{{ note.title }}</ion-card-title>
   </ion-card-header>
   <ion-card-content>
@@ -23,7 +23,7 @@
 
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-button (click)="test()" fill="clear" color="primary" [id]="pophoverId">
+        <ion-button (click)="test()" fill="clear" color="primary" [id]="popoverId">
           <ion-icon name="camera-outline"></ion-icon>
         </ion-button>
 
@@ -36,7 +36,7 @@
   </ion-card-content>
 </ion-card>
 
-<ion-popover [trigger]="pophoverId">
+<ion-popover [trigger]="popoverId">
   <ng-template>
     <ion-list>
       <ion-list-header>Photos</ion-list-header>
