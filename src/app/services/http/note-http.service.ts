@@ -24,9 +24,9 @@ export class NoteHttpService extends HttpBaseService {
     );
   }
 
-  public getById(id): Observable<Payload<Note[]>> {
+  public getById(id): Observable<Payload<Note>> {
     return this.fromPayloadEndpoint(endpoint =>
-      this.httpClient.get<Payload<Note[]>>(`${endpoint}/${id}`)
+      this.httpClient.get<Payload<Note>>(`${endpoint}/${id}`)
     );
   }
 
@@ -39,17 +39,6 @@ export class NoteHttpService extends HttpBaseService {
   public update(id: string, body: UpdateNoteRequest): Observable<Payload<undefined> | null> {
     return this.fromPayloadEndpoint(endpoint =>
       this.httpClient.put<Payload<undefined> | null>(`${endpoint}/${id}`, body)
-        // .pipe(catchError((err, caught) => {
-        //
-        //   console.log(err.error)
-        //   if (err instanceof HttpErrorResponse)
-        //   {
-        //     const errorPayload: Payload<undefined> = JSON.parse(err.error);
-        //     return of(errorPayload);
-        //   } else {
-        //     throw err;
-        //   }
-        // }))
     );
   }
 

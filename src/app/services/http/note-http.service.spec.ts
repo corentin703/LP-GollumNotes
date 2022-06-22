@@ -14,6 +14,11 @@ describe('NoteHttpService', () => {
   let noteHttpService: NoteHttpService;
 
   const note = makeNote();
+  const notes = [
+    note,
+    makeNote(),
+    makeNote(),
+  ];
 
   const updatedNoteContent = faker.lorem.text();
 
@@ -35,16 +40,33 @@ describe('NoteHttpService', () => {
 
   it('should get all', () => {
     let response: Payload<Note[]>;
-    noteHttpService.getAll().subscribe(notes => response = notes);
-    httpTestingController.expectOne(`${fakeConfig.webService.url}/notes`);
+    const responseBody: Payload<Note[]> = {
+      data: notes,
+    };
 
+    noteHttpService.getAll().subscribe(response$ => response = response$);
+    const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes`);
+    request.flush(responseBody);
+
+    expect(response.data.length).toEqual(responseBody.data.length);
   });
 
-  it('should get all', () => {
-    let gotNotes: Note[];
-    noteStoreService.getAll().subscribe(notes => gotNotes = notes);
-    httpTestingController.expectOne(`${fakeConfig.webService.url}/notes`);
+  it('should get by id', () => {
+    let response: Payload<Note>;
+    const responseBody: Payload<Note> = {
+      data: note,
+    };
 
+    noteHttpService.getById(note.id).subscribe(response$ => response = response$);
+    const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes/${note.id}`);
+    request.flush(responseBody);
+
+    expect(response.data.id).toEqual(responseBody.data.id);
+    for(const property in responseBody.data) {
+      if (Object.prototype.hasOwnProperty.call(responseBody.data, property)) {
+        expect(response.data[property]).toEqual(responseBody.data[property]);
+      }
+    }
   });
 
   it('should request note creation', () => {

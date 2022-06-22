@@ -5,7 +5,7 @@ export const makeNote = (): Note => ({
   id: faker.datatype.uuid(),
   title: faker.word.noun(),
   content: faker.lorem.text(),
-  createdAt: new Date(),
+  createdAt: faker.date.past(),
 });
 
 
