@@ -13,21 +13,17 @@ import {Payload} from '@app/services/http/common.type';
 export class NoteStoreService implements IEntityStoreService<Note, CreateNoteRequest, UpdateNoteRequest> {
   private readonly notes$ = new BehaviorSubject<Note[]>(undefined);
 
-  private isInitialized = false;
-
   constructor(
     private noteHttpService: NoteHttpService
-  ) { }
+  ) {
+    this.refreshCollection();
+  }
 
   public getAll(): Observable<Note[]> {
-    if (!this.isInitialized) {
-      this.refreshCollection();
-    }
-
     return this.notes$.asObservable();
   }
 
-  public getById(id: string): Observable<Note> {
+  public getById(id: string): Observable<Note | null> {
     return this.notes$
       .asObservable()
       .pipe(
@@ -46,7 +42,7 @@ export class NoteStoreService implements IEntityStoreService<Note, CreateNoteReq
     return this.noteHttpService.create(body)
       .pipe(
         tap(response => {
-          if (response.data === null) {
+          if (response.errorStatus !== undefined || response.data === null) {
             return;
           }
 
@@ -107,7 +103,6 @@ export class NoteStoreService implements IEntityStoreService<Note, CreateNoteReq
     this.noteHttpService.getAll().subscribe(notes => {
       if (notes.data !== undefined) {
         this.notes$.next(notes.data);
-        this.isInitialized = true;
       }
     });
   }

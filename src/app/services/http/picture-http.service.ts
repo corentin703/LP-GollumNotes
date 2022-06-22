@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ConfigService} from '@app/services/config.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PictureResponse} from './picture-http.service.type';
 import {Payload} from './common.type';
 import {HttpDownloadService} from './http-download.service';
 import {HttpBaseService} from '@app/services/http/http-baseService';
+import {Picture} from '@app/entities/Picture';
 
 @Injectable({
   providedIn: 'root'
@@ -20,16 +20,16 @@ export class PictureHttpService extends HttpBaseService {
     super(configService);
   }
 
-  public getAll(noteId: string): Observable<Payload<PictureResponse[]>> {
+  public getAll(noteId: string): Observable<Payload<Picture[]>> {
     return this.fromPayloadEndpoint(endpoint =>
-      this.httpClient.get<Payload<PictureResponse[]>>(endpoint),
+      this.httpClient.get<Payload<Picture[]>>(endpoint),
       noteId
     );
   }
 
-  public getById(noteId: string, pictureId: string): Observable<Payload<PictureResponse>> {
+  public getById(noteId: string, pictureId: string): Observable<Payload<Picture>> {
     return this.fromPayloadEndpoint(endpoint =>
-      this.httpClient.get<Payload<PictureResponse>>(`${endpoint}/${pictureId}`),
+      this.httpClient.get<Payload<Picture>>(`${endpoint}/${pictureId}`),
       noteId
     );
   }
@@ -41,12 +41,12 @@ export class PictureHttpService extends HttpBaseService {
     );
   }
 
-  public create(noteId: string, pictureBlob: Blob): Observable<Payload<PictureResponse>> {
+  public create(noteId: string, pictureBlob: Blob): Observable<Payload<Picture>> {
     const formData = new FormData();
     formData.append('file', pictureBlob);
 
     return this.fromPayloadEndpoint(
-      endpoint => this.httpClient.post<Payload<PictureResponse>>(endpoint, formData),
+      endpoint => this.httpClient.post<Payload<Picture>>(endpoint, formData),
       noteId
     );
   }

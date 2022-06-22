@@ -4,6 +4,7 @@ import {Camera} from '@ionic-native/camera/ngx';
 import {Note} from '@app/entities/Note';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NoteStoreService} from '@app/services/stores/note-store.service';
+import {Photo} from '@capacitor/camera';
 
 @Component({
   selector: 'app-note',
@@ -11,14 +12,12 @@ import {NoteStoreService} from '@app/services/stores/note-store.service';
   styleUrls: ['./note.component.scss'],
 })
 export class NoteComponent implements OnInit {
-
   @Input() public note: Note;
-
   public noteForm: FormGroup;
-
   public isEditing = false;
-
   public errors: Array<string>;
+
+  private pictures: Photo[];
 
   constructor(
     private readonly noteStoreService: NoteStoreService,
@@ -117,7 +116,8 @@ export class NoteComponent implements OnInit {
         + '\nexif '+ value.exif
         + '\nsaved '+ value.saved
         );
-        this.note.pictures.push(newPhoto);
+        this.pictures.push(value);
+        // this.note.pictures.push(newPhoto);
       }
     );
 
