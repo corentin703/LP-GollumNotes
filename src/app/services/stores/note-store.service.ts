@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, from, Observable} from 'rxjs';
 import {Note} from '@app/entities/Note';
 import {NoteHttpService} from '@app/services/http/note-http.service';
@@ -110,40 +110,39 @@ export class NoteStoreService {
   }
 
   private loadPictures() {
+
     this.notes$.value?.forEach(note => {
+      const notes = this.notes$.value;
+      const updatedNote = notes.find(it => it.id === note.id);
+
       note.pictures?.forEach(picture => {
         this.pictureStore.getContentById(note.id, picture.id).subscribe(response => {
           if ((response as Payload<undefined>).errors !== undefined) {
             return;
           }
 
-          const base64Picture = response as string;
-
-          const notes = this.notes$.value;
-          const updatedNote = notes.find(it => it.id === note.id);
-          updatedNote.pictures.find(it => it.id = picture.id).base64 = base64Picture;
-
+          updatedNote.pictures.find(it => it.id === picture.id).base64 = response as string;
           this.notes$.next(notes);
         });
       });
     });
 
     this.pictureStore.pictureUpdateObservable.subscribe(pictureUpdate => {
-      const notes = this.notes$.value;
-      const noteToUpdate = notes.find(note => note.id === pictureUpdate.noteId);
+      const notesState = this.notes$.value;
+      const noteToUpdate = notesState.find(note => note.id === pictureUpdate.noteId);
       if (noteToUpdate === undefined) {
         return undefined;
       }
 
       if (pictureUpdate.crudAction === 'create' && pictureUpdate.picture !== undefined) {
         noteToUpdate.pictures.push(pictureUpdate.picture);
-        this.notes$.next(notes);
+        this.notes$.next(notesState);
         return;
       }
 
       if (pictureUpdate.crudAction === 'delete' && pictureUpdate.pictureId !== undefined) {
         noteToUpdate.pictures = noteToUpdate.pictures.filter(picture => picture.id !== pictureUpdate.pictureId);
-        this.notes$.next(notes);
+        this.notes$.next(notesState);
         return;
       }
     });
