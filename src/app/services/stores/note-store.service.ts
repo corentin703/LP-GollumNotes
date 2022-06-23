@@ -4,19 +4,21 @@ import {Note} from '@app/entities/Note';
 import {NoteHttpService} from '@app/services/http/note-http.service';
 import {first, map, tap} from 'rxjs/operators';
 import {CreateNoteRequest, UpdateNoteRequest} from '@app/services/http/note-http.service.type';
-import {IEntityStoreService} from '@app/contracts/services/stores/entity-store-service';
 import {Payload} from '@app/services/http/common.type';
+import {PictureStoreService} from '@app/services/stores/picture-store.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NoteStoreService implements IEntityStoreService<Note, CreateNoteRequest, UpdateNoteRequest> {
+export class NoteStoreService {
   private readonly notes$ = new BehaviorSubject<Note[]>(undefined);
 
   constructor(
-    private noteHttpService: NoteHttpService
+    private noteHttpService: NoteHttpService,
+    private pictureStore: PictureStoreService,
   ) {
     this.refreshCollection();
+    this.loadPictures();
   }
 
   public getAll(): Observable<Note[]> {
@@ -103,6 +105,46 @@ export class NoteStoreService implements IEntityStoreService<Note, CreateNoteReq
     this.noteHttpService.getAll().subscribe(notes => {
       if (notes.data !== undefined) {
         this.notes$.next(notes.data);
+      }
+    });
+  }
+
+  private loadPictures() {
+    this.notes$.value.forEach(note => {
+      note.pictures.forEach(picture => {
+        this.pictureStore.getContentById(note.id, picture.id).subscribe(response => {
+          if ((response as Payload<undefined>).errors !== undefined) {
+            return;
+          }
+
+          const blob = response as Blob;
+
+          const notes = this.notes$.value;
+          const updatedNote = notes.find(it => it.id === note.id);
+          updatedNote.pictures.find(it => it.id = picture.id).blob = blob;
+
+          this.notes$.next(notes);
+        });
+      });
+    });
+
+    this.pictureStore.pictureUpdateObservable.subscribe(pictureUpdate => {
+      const notes = this.notes$.value;
+      const noteToUpdate = notes.find(note => note.id === pictureUpdate.noteId);
+      if (noteToUpdate === undefined) {
+        return undefined;
+      }
+
+      if (pictureUpdate.crudAction === 'create' && pictureUpdate.picture !== undefined) {
+        noteToUpdate.pictures.push(pictureUpdate.picture);
+        this.notes$.next(notes);
+        return;
+      }
+
+      if (pictureUpdate.crudAction === 'delete' && pictureUpdate.pictureId !== undefined) {
+        noteToUpdate.pictures = noteToUpdate.pictures.filter(picture => picture.id !== pictureUpdate.pictureId);
+        this.notes$.next(notes);
+        return;
       }
     });
   }

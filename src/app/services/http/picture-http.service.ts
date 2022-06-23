@@ -34,7 +34,7 @@ export class PictureHttpService extends HttpBaseService {
     );
   }
 
-  public getContentById(noteId: string, pictureId: string): Observable<Blob> | Observable<Payload<undefined>> {
+  public getContentById(noteId: string, pictureId: string): Observable<Blob | Payload<undefined>> {
     return this.fromEndpoint(
       endpoint => this.download.download(`${endpoint}/${pictureId}`),
       noteId
