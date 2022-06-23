@@ -35,7 +35,7 @@ describe('ConfigService', () => {
   //     config = _config;
   //   });
   //
-  //   const req = httpTestingController.expectOne(window.origin + '/assets/config.json');
+  //   const req = httpTestingController.expectOne('assets/config.json');
   //   req.flush(fakeConfig);
   //
   //   tick(500);

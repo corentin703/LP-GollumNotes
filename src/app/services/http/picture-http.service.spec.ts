@@ -46,7 +46,7 @@ describe('PictureService', () => {
     };
 
     pictureHttpService.getAll(note.id).subscribe(response$ => response = response$);
-    const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes`);
+    const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes/${note.id}/pictures`);
     request.flush(responseBody);
 
     expect(response.data.length).toEqual(responseBody.data.length);
@@ -59,7 +59,7 @@ describe('PictureService', () => {
     };
 
     pictureHttpService.getById(note.id, picture.id).subscribe(response$ => response = response$);
-    const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes/${note.id}/pictures/${note.id}`);
+    const request = httpTestingController.expectOne(`${fakeConfig.webService.url}/notes/${note.id}/pictures/${picture.id}`);
     request.flush(responseBody);
 
     expect(response.data.id).toEqual(responseBody.data.id);
