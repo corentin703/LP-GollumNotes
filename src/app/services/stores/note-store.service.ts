@@ -18,7 +18,6 @@ export class NoteStoreService {
     private pictureStore: PictureStoreService,
   ) {
     this.refreshCollection();
-    this.loadPictures();
   }
 
   public getAll(): Observable<Note[]> {
@@ -105,23 +104,24 @@ export class NoteStoreService {
     this.noteHttpService.getAll().subscribe(notes => {
       if (notes.data !== undefined) {
         this.notes$.next(notes.data);
+        this.loadPictures();
       }
     });
   }
 
   private loadPictures() {
-    this.notes$.value.forEach(note => {
-      note.pictures.forEach(picture => {
+    this.notes$.value?.forEach(note => {
+      note.pictures?.forEach(picture => {
         this.pictureStore.getContentById(note.id, picture.id).subscribe(response => {
           if ((response as Payload<undefined>).errors !== undefined) {
             return;
           }
 
-          const blob = response as Blob;
+          const base64Picture = response as string;
 
           const notes = this.notes$.value;
           const updatedNote = notes.find(it => it.id === note.id);
-          updatedNote.pictures.find(it => it.id = picture.id).blob = blob;
+          updatedNote.pictures.find(it => it.id = picture.id).base64 = base64Picture;
 
           this.notes$.next(notes);
         });

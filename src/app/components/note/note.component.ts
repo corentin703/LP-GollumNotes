@@ -3,7 +3,8 @@ import {PhotoService} from '@app/services/photo.service';
 import {Note} from '@app/entities/Note';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NoteStoreService} from '@app/services/stores/note-store.service';
-import {Photo} from '@capacitor/camera';
+import {PictureStoreService} from '@app/services/stores/picture-store.service';
+import {Picture} from '@app/entities/Picture';
 
 @Component({
   selector: 'app-note',
@@ -17,10 +18,9 @@ export class NoteComponent implements OnInit {
   public errors: Array<string>;
   public popoverId: string;
 
-  public pictures: Photo[] = [];
-
   constructor(
     private readonly noteStoreService: NoteStoreService,
+    private readonly pictureStoreService: PictureStoreService,
     private readonly photoService: PhotoService,
   ) { }
 
@@ -31,6 +31,10 @@ export class NoteComponent implements OnInit {
   public get contentControl(): AbstractControl {
     return this.noteForm?.get('content');
   }
+
+  public get pictures(): Picture[] {
+    return this.note.pictures.filter(picture => picture.base64 !== undefined);
+  };
 
   public ngOnInit() {
     this.popoverId = `photo-add-btn-${this.note.id}`;
@@ -88,43 +92,12 @@ export class NoteComponent implements OnInit {
   }
 
   public takePicture() {
-    console.log('LA NOTE ' + this.note.title);
-    const newPhoto = this.photoService.takePhoto();
-
-    newPhoto.then(
-      value => {
-        console.log(
-          'dataUrl ' + value.dataUrl
-        + '\nformat '+ value.format
-        + '\npath '+ value.path
-        + '\nwebPath '+ value.webPath
-        + '\nbase64String '+ value.base64String
-        + '\nexif '+ value.exif
-        + '\nsaved '+ value.saved
-        );
-        this.pictures.push(value);
-      }
-    );
-
-    // console.log('new pic : ' + newPhoto.);
-  }
-  //   const options: CameraOptions = {
-  //     quality: 100,
-  //     destinationType: this.camera.DestinationType.FILE_URI,
-  //     encodingType: this.camera.EncodingType.JPEG,
-  //     mediaType: this.camera.MediaType.PICTURE
-  //   };
-  //   this.camera.getPicture(options).then((imageData) => {
-  //     // imageData is either a base64 encoded string or a file URI
-  //     // If it's base64 (DATA_URL):
-  //     let base64Image = 'data:image/jpeg;base64,' + imageData;
-  //   }, (err) => {
-  //     // Handle error
-  //   });
-  // }
-  test() {
-    console.log('Test :');
-    console.log('note titile : ' + this.note.title);
-    console.log('note content : ' + this.note.content);
+    const newPhotoTask = this.photoService.takePhoto();
+    newPhotoTask
+      .then(newPhoto =>
+        this.pictureStoreService
+          .create(this.note.id, newPhoto)
+          .subscribe(response => console.log('Picture added'))
+      );
   }
 }

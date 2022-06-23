@@ -9,7 +9,7 @@
     <ion-grid>
         <ion-row >
           <ion-col *ngFor="let image of pictures; ">
-            <ion-img style="max-width: 100px; max-height: 100px" [src]=" image.webPath"></ion-img>
+            <ion-img style="max-width: 100px; max-height: 100px" [src]="'data:image/png;base64,' + image.base64"></ion-img>
           </ion-col>
         </ion-row>
 
@@ -23,7 +23,7 @@
 
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-button (click)="test()" fill="clear" color="primary" [id]="popoverId">
+        <ion-button fill="clear" color="primary" [id]="popoverId">
           <ion-icon name="camera-outline"></ion-icon>
         </ion-button>
 

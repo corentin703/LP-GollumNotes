@@ -6,6 +6,8 @@ import {Payload} from './common.type';
 import {HttpDownloadService} from './http-download.service';
 import {HttpBaseService} from '@app/services/http/http-baseService';
 import {Picture} from '@app/entities/Picture';
+import {tap} from 'rxjs/operators';
+import {connectableObservableDescriptor} from 'rxjs/internal/observable/ConnectableObservable';
 
 @Injectable({
   providedIn: 'root'
@@ -36,17 +38,19 @@ export class PictureHttpService extends HttpBaseService {
 
   public getContentById(noteId: string, pictureId: string): Observable<Blob | Payload<undefined>> {
     return this.fromEndpoint(
-      endpoint => this.download.download(`${endpoint}/${pictureId}`),
+      endpoint => this.download.download(`${endpoint}/${pictureId}/content`),
       noteId
     );
   }
 
   public create(noteId: string, pictureBlob: Blob): Observable<Payload<Picture>> {
-    const formData = new FormData();
-    formData.append('file', pictureBlob);
-
     return this.fromPayloadEndpoint(
-      endpoint => this.httpClient.post<Payload<Picture>>(endpoint, formData),
+      endpoint => {
+        const formData = new FormData();
+        formData.append('file', pictureBlob);
+
+        return this.httpClient.post<Payload<Picture>>(endpoint, formData);
+      },
       noteId
     );
   }
