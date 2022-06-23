@@ -16,7 +16,6 @@ export class NoteComponent implements OnInit {
   public noteForm: FormGroup;
   public isEditing = false;
   public errors: Array<string>;
-  public popoverId: string;
 
   constructor(
     private readonly noteStoreService: NoteStoreService,
@@ -37,7 +36,6 @@ export class NoteComponent implements OnInit {
   };
 
   public ngOnInit() {
-    this.popoverId = `photo-add-btn-${this.note.id}`;
     this.noteForm = new FormGroup({
       title: new FormControl(this.note.title, [
         Validators.required,
@@ -97,7 +95,7 @@ export class NoteComponent implements OnInit {
       .then(newPhoto =>
         this.pictureStoreService
           .create(this.note.id, newPhoto)
-          .subscribe(response => console.log('Picture added'))
-      );
+          .subscribe(_ => console.log('Picture added'))
+      ).catch(_ => console.log('Canceled'));
   }
 }

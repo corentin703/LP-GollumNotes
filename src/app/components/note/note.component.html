@@ -23,7 +23,7 @@
 
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-button fill="clear" color="primary" [id]="popoverId">
+        <ion-button (click)="takePicture()" fill="clear" color="primary">
           <ion-icon name="camera-outline"></ion-icon>
         </ion-button>
 
@@ -35,16 +35,6 @@
     </ion-toolbar>
   </ion-card-content>
 </ion-card>
-
-<ion-popover [trigger]="popoverId">
-  <ng-template>
-    <ion-list>
-      <ion-list-header>Photos</ion-list-header>
-      <ion-item button (click)="takePicture()" expand="block">Prendre photo</ion-item>
-      <ion-item button (click)="addPicture()" expand="block">Ajouter photo</ion-item>
-    </ion-list>
-  </ng-template>
-</ion-popover>
 
 <ng-template #editing>
   <form [formGroup]="noteForm" (ngSubmit)="commitUpdate()" novalidate>
