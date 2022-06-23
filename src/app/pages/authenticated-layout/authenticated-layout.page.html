@@ -2,7 +2,7 @@
   <ion-menu contentId="auth-content" type="overlay">
     <ion-content>
       <ion-list id="inbox-list">
-        <ion-list-header class="ion-padding-bottom">
+        <ion-list-header class="ion-padding-bottom ion-justify-content-between">
           <ion-thumbnail class="ion-margin-end">
             <ion-img src="assets/icon/icon-512.png"></ion-img>
           </ion-thumbnail>
@@ -15,16 +15,13 @@
             <ion-label>{{ p.title }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
+        <div class="ion-margin-top ion-text-center">
+          <ion-button (click)="logout()" fill="clear" color="danger">
+            <ion-icon slot="start" name="log-out-outline"></ion-icon>
+            <ion-label>Déconnexion</ion-label>
+          </ion-button>
+        </div>
       </ion-list>
-
-      <!--      <ion-list id="labels-list">-->
-      <!--        <ion-list-header>Labels</ion-list-header>-->
-
-      <!--        <ion-item *ngFor="let label of labels" lines="none">-->
-      <!--          <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>-->
-      <!--          <ion-label>{{ label }}</ion-label>-->
-      <!--        </ion-item>-->
-      <!--      </ion-list>-->
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="auth-content"></ion-router-outlet>

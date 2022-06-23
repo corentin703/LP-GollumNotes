@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AccountHttpService} from '@app/services/http/account-http.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-authenticated-layout',
@@ -13,9 +15,17 @@ export class AuthenticatedLayoutPage implements OnInit {
     { title: 'Archive', url: '/notes/archive', icon:'archive' },
   ];
 
-  constructor() { }
+  constructor(
+    private accountHttpService: AccountHttpService,
+    private router: Router,
+  ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
+    //
   }
 
+  public logout() {
+    this.accountHttpService.logout()
+      .subscribe(_ => this.router.navigateByUrl('/login'));
+  }
 }
