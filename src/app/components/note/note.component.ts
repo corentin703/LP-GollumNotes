@@ -5,6 +5,8 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {NoteStoreService} from '@app/services/stores/note-store.service';
 import {PictureStoreService} from '@app/services/stores/picture-store.service';
 import {Picture} from '@app/entities/Picture';
+import {Platform} from '@ionic/angular';
+import {PLATFORMS} from 'cordova-res/dist/platform';
 
 @Component({
   selector: 'app-note',
@@ -16,12 +18,15 @@ export class NoteComponent implements OnInit {
   public noteForm: FormGroup;
   public isEditing = false;
   public errors: Array<string>;
+
   public popoverId: string;
+  public enablePopover: boolean;
 
   constructor(
     private readonly noteStoreService: NoteStoreService,
     private readonly pictureStoreService: PictureStoreService,
     private readonly photoService: PhotoService,
+    private readonly platform: Platform,
   ) { }
 
   public get titleControl(): AbstractControl {
@@ -38,6 +43,8 @@ export class NoteComponent implements OnInit {
 
   public ngOnInit() {
     this.popoverId = `photo-add-btn-${this.note.id}`;
+    this.enablePopover = this.platform.is('hybrid');
+
     this.noteForm = new FormGroup({
       title: new FormControl(this.note.title, [
         Validators.required,
@@ -86,18 +93,23 @@ export class NoteComponent implements OnInit {
     this.isEditing = false;
   }
 
-  public addPicture() {
-    console.log('note title : ' + this.note.title );
-    console.log('note content : ' + this.note.content );
+  public pickImagesFromGallery() {
+    this.photoService.pickPhoto().then(photos => {
+      photos.forEach(photo => {
+        this.pictureStoreService
+          .create(this.note.id, photo)
+          .subscribe(_ => console.log('Picture added from gallery'));
+      });
+    });
   }
 
-  public takePicture() {
+  public takePhoto() {
     const newPhotoTask = this.photoService.takePhoto();
     newPhotoTask
       .then(newPhoto =>
         this.pictureStoreService
           .create(this.note.id, newPhoto)
-          .subscribe(response => console.log('Picture added'))
+          .subscribe(_ => console.log('Picture added'))
       );
   }
 }

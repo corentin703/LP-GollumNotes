@@ -3,7 +3,7 @@ import {PictureHttpService} from '@app/services/http/picture-http.service';
 import {Picture} from '@app/entities/Picture';
 import {Observable, Subject} from 'rxjs';
 import {Payload} from '@app/services/http/common.type';
-import {PictureUpdate} from '@app/services/stores/picture-store.service.type';
+import {PictureUpdateEvent} from '@app/services/stores/picture-store.service.type';
 import {tap, switchMap} from 'rxjs/operators';
 import {Photo} from '@capacitor/camera';
 import {decode, encode} from 'base64-arraybuffer';
@@ -12,13 +12,13 @@ import {decode, encode} from 'base64-arraybuffer';
   providedIn: 'root'
 })
 export class PictureStoreService {
-  private pictureUpdateSubject$: Subject<PictureUpdate> = new Subject<PictureUpdate>();
+  private pictureUpdateSubject$: Subject<PictureUpdateEvent> = new Subject<PictureUpdateEvent>();
 
   constructor(
     private pictureHttpService: PictureHttpService
   ) { }
 
-  public get pictureUpdateObservable(): Observable<PictureUpdate> {
+  public get pictureUpdateObservable(): Observable<PictureUpdateEvent> {
     return this.pictureUpdateSubject$.asObservable();
   }
 

@@ -1,6 +1,6 @@
 import {Picture} from '@app/entities/Picture';
 
-export type PictureUpdate = {
+export type PictureUpdateEvent = {
   noteId: string;
   pictureId?: string;
   picture?: Picture;
