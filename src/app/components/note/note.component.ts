@@ -6,7 +6,6 @@ import {NoteStoreService} from '@app/services/stores/note-store.service';
 import {PictureStoreService} from '@app/services/stores/picture-store.service';
 import {Picture} from '@app/entities/Picture';
 import {Platform} from '@ionic/angular';
-import {PLATFORMS} from 'cordova-res/dist/platform';
 
 @Component({
   selector: 'app-note',

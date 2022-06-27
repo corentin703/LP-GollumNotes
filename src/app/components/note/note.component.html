@@ -8,8 +8,15 @@
 
     <ion-grid>
         <ion-row >
-          <ion-col *ngFor="let image of pictures; ">
-            <ion-img style="max-width: 100px; max-height: 100px" [src]="'data:image/png;base64,' + image.base64"></ion-img>
+          <ion-col *ngFor="let image of note.pictures;" class="ion-text-center">
+            <ion-img
+              *ngIf="image.base64 !== undefined else imgNotLoaded"
+              style="max-width: 100px; max-height: 100px"
+              [src]="'data:image/png;base64,' + image.base64"
+            ></ion-img>
+            <ng-template #imgNotLoaded>
+              <ion-spinner color="Tertiary"></ion-spinner>
+            </ng-template>
           </ion-col>
         </ion-row>
 

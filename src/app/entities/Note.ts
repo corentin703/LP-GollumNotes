@@ -6,5 +6,5 @@ export type Note = {
   content: string;
   createdAt?: Date;
   lastModifiedAt?: Date;
-  pictures: Picture[];
+  pictures?: Picture[];
 } & IEntity;

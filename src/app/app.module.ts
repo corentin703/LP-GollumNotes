@@ -36,12 +36,15 @@ registerLocaleData(localeFr);
     })
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'fr-FR' },
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpAuthorizationInterceptor, multi: true },
+    {provide: LOCALE_ID, useValue: 'fr-FR'},
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    {provide: HTTP_INTERCEPTORS, useClass: HttpAuthorizationInterceptor, multi: true},
     AuthGuardService,
     Camera,
   ],
   bootstrap: [AppComponent],
+  exports: [
+    LoadingComponent
+  ]
 })
 export class AppModule {}

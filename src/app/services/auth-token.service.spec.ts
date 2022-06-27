@@ -22,38 +22,29 @@ describe('AuthTokenService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get auth token', (done) => {
+  it('should get auth token', async () => {
     const authToken = 'azertyuiop';
+    await storageMock.set('authToken', authToken);
 
-    storageMock.set('authToken', authToken).then(_ => {
-      service.get().subscribe(token => {
-        expect(token).toEqual(authToken);
-        done();
-      });
-    });
+    const token = await service.get().toPromise();
+    expect(token).toEqual(authToken);
   });
 
-  it('should save auth token', (done) => {
+  it('should save auth token', async () => {
     const authToken = 'azertyuiop';
+    await service.save(authToken);
 
-    service.save(authToken).then(_ => {
-      storageMock.get('authToken').then(token => {
-        expect(token).toEqual(authToken);
-        done();
-      });
-    });
+    const token = await storageMock.get('authToken');
+    expect(token).toEqual(authToken);
   });
 
-  it('should remove authToken', (done) => {
+  it('should remove authToken', async () => {
     const authToken = 'azertyuiop';
+    await storageMock.set('authToken', authToken);
 
-    storageMock.set('authToken', authToken).then(_ => {
-      service.delete().then(__ => {
-        storageMock.get('authToken').then(token => {
-          expect(token).toBeUndefined();
-          done();
-        });
-      });
-    });
+    await service.delete();
+    const token = await storageMock.get('authToken');
+
+    expect(token).toBeUndefined();
   });
 });

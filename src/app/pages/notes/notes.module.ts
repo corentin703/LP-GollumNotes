@@ -13,6 +13,7 @@ import { AddNoteComponent } from '../../components/add-note/add-note.component';
 import {
   AddNoteModalContentComponent
 } from '@app/components/modals/add-note-modal-content/add-note-modal-content.component';
+import {AppModule} from '@app/app.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import {
     FormsModule,
     IonicModule,
     NotesPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [NotesPage, NoteComponent, AddNoteComponent, AddNoteModalContentComponent]
 })

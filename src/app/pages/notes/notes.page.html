@@ -8,10 +8,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <li *ngFor="let note of notes"><app-note class="ion-margin-vertical" [note]=note> </app-note></li>
+  <ion-list *ngIf="notes !== undefined else notesNotLoaded">
+    <li *ngFor="let note of notes"><app-note class="ion-margin-vertical" [note]=note></app-note></li>
   </ion-list>
-<!--  <ion-item></ion-item>-->
+  <ng-template #notesNotLoaded>
+    <ion-item>
+      <ion-spinner color="Primary"></ion-spinner>
+    </ion-item>
+  </ng-template>
 </ion-content>
 
 <ion-modal trigger="open-add-modal-button" [swipeToClose]="true" [presentingElement]="routerOutlet?.nativeEl">
