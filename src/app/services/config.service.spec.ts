@@ -38,8 +38,6 @@ describe('ConfigService', () => {
   //   const req = httpTestingController.expectOne('assets/config.json');
   //   req.flush(fakeConfig);
   //
-  //   tick(500);
-  //
   //   expect(config.webService.url).toEqual('https://gollum-notes.app/api');
   // });
 });

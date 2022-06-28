@@ -40,5 +40,4 @@ export class PhotoService {
 
     return photos;
   }
-
 }
