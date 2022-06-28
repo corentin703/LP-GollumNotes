@@ -11,8 +11,8 @@ export class AuthenticatedLayoutPage implements OnInit {
 
   public appPages = [
     { title: 'Notes', url: '/notes', icon: 'home' },
-    { title: 'Rappels', url: '/notes/rappels', icon: 'bulb' },
-    { title: 'Archive', url: '/notes/archive', icon:'archive' },
+    // { title: 'Rappels', url: '/notes/rappels', icon: 'bulb' },
+    // { title: 'Archive', url: '/notes/archive', icon:'archive' },
   ];
 
   constructor(
