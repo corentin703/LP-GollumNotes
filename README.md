@@ -2,6 +2,15 @@
 
 Application de prise de notes avec prise de photos faite par Corentin VÉROT et Nicolas MORIN.
 
+## Commandes
+### Installation:
+Pour installer la CLI d'Ionic, tapez ```npm install -g @ionic/cli```
+Pour installer toutes les dépendances du projet, tapez ```npm install```.
+
+Pour lancer :
+- l'application web, tapez ```ionic serve```
+- l'application android, tapez ```ionic capacitor run android```
+
 ## Fonctionnalités :
 - Gestion de comptes utilisateurs (avec jetons JWT)
 - Gestion de notes (ajout / modification / suppression) avec photos en ajout seulement
